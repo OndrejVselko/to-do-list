@@ -1,8 +1,13 @@
 import './App.css'
-
-function App() {
+function MyNavbar() {
   return (
-    <h1>test</h1>);
+      <div id="nav">
+        <a href="/"></a>
+        <a href="/edit"></a>
+        <a href="/stats"></a>
+      </div>
+  );
 }
 
-export default App
+
+export {MyNavbar}
