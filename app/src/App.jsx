@@ -9,5 +9,23 @@ function MyNavbar() {
   );
 }
 
+function AccountButton(){
+    return(
+        <div id="account_button" class="corner_button"><a href=""><img src="src/icons/user.png" alt="account icon"/></a></div>
+    );
+}
 
-export {MyNavbar}
+function ThemeButton(){
+    return(
+        <div id="theme_button" class="corner_button"><a href=""><img src="src/icons/theme.png" alt="account icon"/></a></div>
+    );
+}
+
+function NewTaskButton(){
+    return(
+        <div id="new_task_button" class="corner_button"><a href=""><img src="src/icons/notes.png" alt="account icon"/></a></div>
+    );
+}
+
+
+export {MyNavbar, AccountButton, NewTaskButton, ThemeButton}
