@@ -7,8 +7,12 @@ import {Route, Routes} from "react-router-dom";
 import Home from "./components/Home.jsx";
 import Edit from "./components/Edit.jsx";
 import Stats from "./components/Stats.jsx";
+import {useEffect} from "react";
 
 function App() {
+    useEffect(() => {
+        document.body.setAttribute("theme", "dark");
+    }, []);
   return (
       <>
         < Navbar></Navbar>

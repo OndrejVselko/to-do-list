@@ -1,5 +1,24 @@
+:root{
+  --background_primary: #323437;
+  --background_secondary: #2C2E31;
+  --yellow: #E2B714;
+  --text_color: #FFFFFF
+}
+
+[theme='light']{
+  --background_primary: #FFFFFF;
+  --background_secondary: #FFFDEE;
+  --text_color: #323437
+}
+
+[theme='dark']{
+  --background_primary: #323437;
+  --background_secondary: #2C2E31;
+  --text_color: #FFFFFF
+}
+
 body {
-  color: #FFFFFF;
-  background-color: #323437;
+  color: var(--text_color);
+  background-color: var(--background_primary);
   margin: 0;
 }

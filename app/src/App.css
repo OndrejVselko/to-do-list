@@ -1,12 +1,12 @@
 #nav{
-  border-left: 3px solid #E2B714;
-  border-right: 3px solid #E2B714;
-  border-bottom: 3px solid #E2B714;
+  border-left: 3px solid var(--yellow);
+  border-right: 3px solid var(--yellow);
+  border-bottom: 3px solid var(--yellow);
   border-radius: 0 0 15px 15px;
   width: 201px;
   height: 50px;
   margin-left: calc(50vw - 100px);
-  background-color: #2C2E31;
+  background-color: var(--background_secondary);
 }
 
 #nav a img{
@@ -29,31 +29,31 @@
 }
 
 .corner_button{
-  background-color: #2C2E31;
+  background-color: var(--background_secondary);
   width: 50px;
   height: 50px;
   position: absolute;
 }
 
 #account_button{
-  border-right: 3px solid #E2B714;
-  border-bottom: 3px solid #E2B714;
+  border-right: 3px solid var(--yellow);
+  border-bottom: 3px solid var(--yellow);
   border-radius: 0 0 15px 0;
   top: 0px;
   left: 0px;
 }
 
 #theme_button{
-  border-left: 3px solid #E2B714;
-  border-bottom: 3px solid #E2B714;
+  border-left: 3px solid var(--yellow);
+  border-bottom: 3px solid var(--yellow);
   border-radius: 0 0 0 15px;
   top: 0px;
   right: 0px;
 }
 
 #new_task_button{
-  border-left: 3px solid #E2B714;
-  border-top: 3px solid #E2B714;
+  border-left: 3px solid var(--yellow);
+  border-top: 3px solid var(--yellow);
   border-radius: 15px 0 0 0;
   bottom: 0px;
   right: 0px;
