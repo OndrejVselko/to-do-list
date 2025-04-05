@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "type": "task",
+        "name": "Jít běhat",
+        "date": "2025-04-16T15:53:02.000Z",
+        "category": "Sport",
+        "priority": false,
+        "repetition": true,
+        "state": 0
+    },
+    {
+        "id": 2,
+        "type": "task",
+        "name": "Udělat úkol",
+        "date": "2025-04-18T15:53:02.000Z",
+        "category": "Škola",
+        "priority": true,
+        "repetition": false,
+        "state": 0
+    },
+    {
+        "id": 3,
+        "type": "task",
+        "name": "Mamka narozeniny",
+        "date": "2025-04-23T15:53:02.000Z",
+        "category": null,
+        "priority": true,
+        "repetition": false,
+        "state": 0
+    },
+    {
+        "id": 4,
+        "type": "task",
+        "name": "Schůzka",
+        "date": "2025-04-25T15:53:02.000Z",
+        "category": null,
+        "priority": false,
+        "repetition": false,
+        "state": 0
+    },
+    {
+        "id": 5,
+        "type": "task",
+        "name": "Něco druhého ten den",
+        "date": "2025-04-25T15:55:02.000Z",
+        "category": null,
+        "priority": true,
+        "repetition": false,
+        "state": 0
+    }
+]
