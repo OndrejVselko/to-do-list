@@ -68,14 +68,44 @@
 
 /*SELECT */
 
-.list{
+.list_border{
   background-color: var(--background_primary);
   border: 3px solid var(--yellow);
   border-radius: 15px;
   width: 400px;
+  height: 76vh;
+  margin-top: 6vh;
+  margin-left: 5vw;
+}
+
+.list{
+  height: calc(100% - 20px);
+  margin-top: 10px;
+  overflow: auto;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px; /* šířka scrollbar tracku */
+}
+
+.list::-webkit-scrollbar-track {
+  background: var(--background_primary); /* barva pozadí */
+  border-radius: 15px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: var(--background_secondary); /* barva thumbu (toho, co se hýbe) */
+  border-radius: 15px 0 0 15px;
+  border: 1px solid var(--yellow);
+  border-right: none;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+  background: #555; /* barva při hoveru */
 }
 
 .list List{
+  height: auto;
   width: 100%;
   max-width: 400px;
 }
@@ -87,3 +117,7 @@
   padding: 8px 16px;
   font-size: 1rem;
 }
+
+
+
+

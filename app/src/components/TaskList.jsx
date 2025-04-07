@@ -1,14 +1,9 @@
 import * as React from 'react';
-import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
 import {useEffect, useState} from "react";
 import {ListItem} from "@mui/material";
 
@@ -70,26 +65,31 @@ export default function TaskList() {
 
 
     return (
-        <div id="task_list" className="list">
-            <List>
-                {Object.entries(groupedData).map(([date, tasks], index) => (
-                    <div key={date}>
-                        <ListItem button onClick={() => handleClick(index)}>
-                            <ListItemText primary={date} />
-                            {openIndexes.includes(index) ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                        <Collapse in={openIndexes.includes(index)} timeout="auto" unmountOnExit>
-                            <List component="div" disablePadding>
-                                {tasks.map((task) => (
-                                    <ListItem key={task.id} sx={{ pl: 4 }}>
-                                        <ListItemText primary={task.name} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Collapse>
-                    </div>
-                ))}
-            </List>
+        <div id="task_list" className="list_border">
+            <div className="list">
+                <List>
+                    {Object.entries(groupedData).map(([date, tasks], index) => (
+                        <div key={date}>
+                            <ListItem button onClick={() => handleClick(index)}>
+                                <ListItemText primary={date} />
+                                {openIndexes.includes(index) ? <ExpandLess /> : <ExpandMore />}
+                            </ListItem>
+                            <Collapse in={openIndexes.includes(index)} timeout="auto" unmountOnExit>
+                                <List component="div" disablePadding>
+                                    {tasks.map((task) => (
+                                        <ListItem key={task.id} sx={{ pl: 4 }}>
+                                            <ListItemText primary={task.name} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Collapse>
+                        </div>
+                    ))}
+                </List>
+            </div>
         </div>
     );
 }
+
+
+
