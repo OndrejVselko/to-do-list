@@ -47,19 +47,29 @@ export default function TaskList() {
             return `${day}.${month}.${year}`;
         };
 
-
+        grouped["Důležité"] = [];
         data.forEach(item => {
+            console.log(item.id);
             const dateKey = formatDate(item.date);
-            if (!grouped[dateKey]) {
-                grouped[dateKey] = [];
-            }
-            grouped[dateKey].push(item);
-        });
 
+            if(item.priority){
+                grouped["Důležité"].push(item);
+            }
+            else{
+                if (!grouped[dateKey]) {
+                    grouped[dateKey] = [];
+                }
+                grouped[dateKey].push(item);
+            }
+
+
+        });
+        if (grouped["Důležité"].length === 0) {
+            console.log("pes");
+            delete grouped["Důležité"];
+        }
         return grouped;
     };
-
-
 
     const groupedData = groupByDate(data)
 
