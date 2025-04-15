@@ -40,35 +40,28 @@ export default function TaskList() {
     const groupByDate = (data) => {
         const grouped = {};
 
-        const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}.${month}.${year}`;
-        };
 
-        grouped["Důležité"] = [];
+
         data.forEach(item => {
-            if (item.type === "task") {
-                const dateKey = formatDate(item.date);
-
-                if (item.priority) {
-                    grouped["Důležité"].push(item);
-                }
-                else {
-                    if (!grouped[dateKey]) {
-                        grouped[dateKey] = [];
-                    }
-                    grouped[dateKey].push(item);
-                }
+            if (item.type === "project"){
+                grouped[item.id]=[];
+            }
+            if (item.type === "subtask"){
+                console.log("Subtask" + item.id)
+                //grouped[item.project_id].push(item);
             }
 
         });
-        if (grouped["Důležité"].length === 0) {
-            delete grouped["Důležité"];
-        }
+        console.log(grouped);
         return grouped;
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
     };
 
     data.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -83,21 +76,10 @@ export default function TaskList() {
             <div className="list">
                 <h3>Úkoly:</h3>
                 <List>
-                    {Object.entries(groupedData).map(([date, tasks], index) => (
-                        <div key={date}>
+                    {Object.entries(groupedData).map(([id, tasks], index) => (
+                        <div key={id}>
                             <ListItem button onClick={() => handleClick(index)}>
-                                <ListItemText primary={
-                                    <>
-                                        {date === "Důležité" && (
-                                            <img
-                                                src="src/icons/alert.png"
-                                                alt="important_icon"
-                                                style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }}
-                                            />
-                                        )}
-                                        {date}
-                                    </>
-                                }/>
+                                <ListItemText primary={name + ", " + id}/>
                                 {openIndexes.includes(index) ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
                             <Collapse in={openIndexes.includes(index)} timeout="auto" unmountOnExit>

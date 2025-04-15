@@ -6,8 +6,8 @@
         "date": "2025-04-16T15:53:02.000Z",
         "category": "Sport",
         "priority": false,
-        "repetition": true,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 2,
@@ -16,8 +16,8 @@
         "date": "2025-04-18T15:53:02.000Z",
         "category": "Škola",
         "priority": false,
-        "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 3,
@@ -26,8 +26,8 @@
         "date": "2025-04-23T15:53:02.000Z",
         "category": null,
         "priority": false,
-        "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 4,
@@ -36,8 +36,8 @@
         "date": "2025-04-25T15:53:02.000Z",
         "category": null,
         "priority": false,
-        "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 5,
@@ -46,57 +46,135 @@
         "date": "2025-04-25T15:55:02.000Z",
         "category": null,
         "priority": false,
-        "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 6,
         "type": "task",
-        "name": "Něco druhého ten den",
+        "name": "Něco nevím co",
         "date": "2025-04-25T15:55:02.000Z",
         "category": null,
         "priority": false,
         "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 7,
         "type": "task",
-        "name": "Něco druhého ten den",
-        "date": "2025-04-25T15:55:02.000Z",
+        "name": "Něco dalšího",
+        "date": "2025-04-24T15:55:02.000Z",
         "category": null,
         "priority": false,
         "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 8,
         "type": "task",
-        "name": "Něco druhého ten den",
+        "name": "A ještě něco",
         "date": "2025-04-26T15:55:02.000Z",
         "category": null,
         "priority": false,
-        "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 9,
         "type": "task",
-        "name": "Něco druhého ten den",
+        "name": "A taky tohle musím udělat",
         "date": "2025-04-27T15:55:02.000Z",
         "category": null,
         "priority": true,
-        "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
     },
     {
         "id": 10,
         "type": "task",
-        "name": "Něco druhého ten den",
+        "name": "Příliš žluťoučký kůň úpěl ďábelské ódy, snad je to dost dlouhééééééééééééééééé",
         "date": "2025-04-28T15:55:02.000Z",
         "category": null,
         "priority": false,
-        "repetition": false,
-        "state": 0
+        "state": 0,
+        "project_id": null
+    },
+
+    {
+        "id": 11,
+        "type": "project",
+        "name": "Udělat semestrální práci",
+        "date": "2025-05-28T15:55:02.000Z",
+        "category": "Škola",
+        "priority": null,
+        "state": 0,
+        "project_id": null
+    },
+
+    {
+        "id": 12,
+        "type": "subtask",
+        "name": "Udělat homepage",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": null,
+        "priority": null,
+        "state": 1,
+        "project_id": 11
+    },
+
+    {
+        "id": 13,
+        "type": "subtask",
+        "name": "Vytvořit editovací stránku",
+        "date": "2025-05-01T15:55:02.000Z",
+        "category": null,
+        "priority": null,
+        "state": 1,
+        "project_id": 11
+    },
+
+    {
+        "id": 14,
+        "type": "subtask",
+        "name": "Udělat historii úkolů",
+        "date": "2025-05-15T15:55:02.000Z",
+        "category": null,
+        "priority": false,
+        "state": 0,
+        "project_id": 11
+    },
+
+    {
+        "id": 15,
+        "type": "subtask",
+        "name": "Napsat dokumentaci",
+        "date": "2025-05-28T15:55:02.000Z",
+        "category": null,
+        "priority": null,
+        "state": 0,
+        "project_id": 11
+    },
+    {
+        "id": 16,
+        "type": "project",
+        "name": "Nějaký další projekt",
+        "date": "2025-05-29T15:55:02.000Z",
+        "category": "Něco",
+        "priority": null,
+        "state": 0,
+        "project_id": null
+    },
+
+    {
+        "id": 17,
+        "type": "subtask",
+        "name": "Nějaký podúkol",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": null,
+        "priority": null,
+        "state": 0,
+        "project_id": 16
     }
 ]

@@ -1,3 +1,7 @@
+body{
+  font-family: Roboto;
+}
+
 #nav{
   border-left: 3px solid var(--yellow);
   border-right: 3px solid var(--yellow);
@@ -68,7 +72,7 @@
 
 /*SELECT */
 
-.list_border{
+.bubble{
   background-color: var(--background_primary);
   border: 3px solid var(--yellow);
   border-radius: 15px;
@@ -110,6 +114,10 @@
   max-width: 400px;
 }
 
+.list h3{
+  margin-left: 16px;
+}
+
 .my-subheader.MuiListSubheader-root {
   background-color: var(--background_primary);
   color: white;
@@ -118,6 +126,8 @@
   font-size: 1rem;
 }
 
-
+#home_body{
+  display: flex;
+}
 
 
