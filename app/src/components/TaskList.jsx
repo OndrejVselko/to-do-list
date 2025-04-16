@@ -89,11 +89,7 @@ export default function TaskList() {
                                 <ListItemText primary={
                                     <>
                                         {date === "Důležité" && (
-                                            <img
-                                                src="src/icons/alert.png"
-                                                alt="important_icon"
-                                                style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }}
-                                            />
+                                            <img src="src/icons/alert.png" alt="important_icon" style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }}/>
                                         )}
                                         {date}
                                     </>

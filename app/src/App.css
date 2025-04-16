@@ -130,4 +130,9 @@ body{
   display: flex;
 }
 
+#task_detail{
+  padding-left: 16px;
+
+}
+
 

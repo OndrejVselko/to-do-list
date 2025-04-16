@@ -37,20 +37,29 @@ export default function TaskList() {
     if (!data) {
         return <div>Loading...</div>;
     }
-    const groupByDate = (data) => {
+
+    /*Takes data from .json file and group them
+    * grouped structure: dictionary - key is id, value is object with name and array of items (subtasks)
+    * first foreach creates keys, second fills their values*/
+    const groupByProject = (data) => {
         const grouped = {};
 
-
+        data.forEach(item => {
+            if (item.type === "project") {
+                grouped[item.id] = {
+                    name: item.name,
+                    items: []
+                };
+            }
+        });
 
         data.forEach(item => {
-            if (item.type === "project"){
-                grouped[item.id]=[];
+            if (item.type === "subtask") {
+                const group = grouped[item.project_id];
+                if (group) {
+                    group.items.push(item);
+                }
             }
-            if (item.type === "subtask"){
-                console.log("Subtask" + item.id)
-                //grouped[item.project_id].push(item);
-            }
-
         });
         console.log(grouped);
         return grouped;
@@ -65,7 +74,7 @@ export default function TaskList() {
     };
 
     data.sort((a, b) => new Date(a.date) - new Date(b.date));
-    const groupedData = groupByDate(data)
+    const groupedData = groupByProject(data)
 
 
     const { setSelectedItem } = useSelection();
@@ -76,17 +85,26 @@ export default function TaskList() {
             <div className="list">
                 <h3>Úkoly:</h3>
                 <List>
-                    {Object.entries(groupedData).map(([id, tasks], index) => (
-                        <div key={id}>
+                    {Object.entries(groupedData).map(([projectId, { name, items }], index) => (
+                        <div key={projectId}>
                             <ListItem button onClick={() => handleClick(index)}>
-                                <ListItemText primary={name + ", " + id}/>
+                                <ListItemText primary={name} />
                                 {openIndexes.includes(index) ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
                             <Collapse in={openIndexes.includes(index)} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
-                                    {tasks.map((task) => (
+                                    {items.map((task) => (
                                         <ListItem key={task.id} sx={{ pl: 4 }} onClick={() => setSelectedItem(task)}>
-                                            <ListItemText primary={task.name} />
+                                            <ListItemText primary={
+                                                <>
+                                                    {task.state === 1 ? (
+                                                        <img src="src/icons/done.png" alt="done_icon" style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }} />
+                                                    ) : (
+                                                        <img src="src/icons/undone.png" alt="undone_icon" style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }} />
+                                                    )}
+                                                    {task.name + " - " + formatDate(task.date)}
+                                                </>
+                                            } />
                                         </ListItem>
                                     ))}
                                 </List>
