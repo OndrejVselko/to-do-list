@@ -11,6 +11,7 @@ import {useSelection} from './SelectionContext';
 export default function TaskList() {
     const [openIndexes, setOpenIndexes] = useState([]);
 
+    // function for multiple open
     const handleClick = (index) => {
         setOpenIndexes((prev) => {
             if (prev.includes(index)) {
@@ -23,6 +24,7 @@ export default function TaskList() {
     const
         [data, setData] = useState(null);
 
+    //function for loading data
     useEffect(() => {
         fetch('/data.json')
             .then(response => {
@@ -37,9 +39,12 @@ export default function TaskList() {
     if (!data) {
         return <div>Loading...</div>;
     }
+
+    //function for grouping task by their importance and date
     const groupByDate = (data) => {
         const grouped = {};
 
+        //formating date
         const formatDate = (dateString) => {
             const date = new Date(dateString);
             const day = String(date.getDate()).padStart(2, '0');
@@ -71,6 +76,7 @@ export default function TaskList() {
         return grouped;
     };
 
+    //sorting by date
     data.sort((a, b) => new Date(a.date) - new Date(b.date));
     const groupedData = groupByDate(data)
 

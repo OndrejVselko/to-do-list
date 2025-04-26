@@ -7,7 +7,8 @@
         "category": "Sport",
         "priority": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 2,
@@ -17,7 +18,8 @@
         "category": "Škola",
         "priority": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 3,
@@ -27,7 +29,8 @@
         "category": null,
         "priority": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 4,
@@ -37,7 +40,8 @@
         "category": null,
         "priority": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 5,
@@ -47,7 +51,8 @@
         "category": null,
         "priority": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": ""
     },
     {
         "id": 6,
@@ -58,7 +63,8 @@
         "priority": false,
         "repetition": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině."
     },
     {
         "id": 7,
@@ -69,7 +75,8 @@
         "priority": false,
         "repetition": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 8,
@@ -79,7 +86,8 @@
         "category": null,
         "priority": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 9,
@@ -89,7 +97,8 @@
         "category": null,
         "priority": true,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 10,
@@ -99,7 +108,8 @@
         "category": null,
         "priority": false,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
 
     {
@@ -110,7 +120,8 @@
         "category": "Škola",
         "priority": null,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
 
     {
@@ -118,10 +129,11 @@
         "type": "subtask",
         "name": "Udělat homepage",
         "date": "2025-04-28T15:55:02.000Z",
-        "category": null,
+        "category": "Udělat semestrální práci",
         "priority": null,
         "state": 1,
-        "project_id": 11
+        "project_id": 11,
+        "comment": "Nějaká superzajímavá poznámka."
     },
 
     {
@@ -129,10 +141,11 @@
         "type": "subtask",
         "name": "Vytvořit editovací stránku",
         "date": "2025-05-01T15:55:02.000Z",
-        "category": null,
+        "category": "Udělat semestrální práci",
         "priority": null,
         "state": 1,
-        "project_id": 11
+        "project_id": 11,
+        "comment": "Nějaká superzajímavá poznámka."
     },
 
     {
@@ -140,10 +153,11 @@
         "type": "subtask",
         "name": "Udělat historii úkolů",
         "date": "2025-05-15T15:55:02.000Z",
-        "category": null,
+        "category": "Udělat semestrální práci",
         "priority": false,
         "state": 0,
-        "project_id": 11
+        "project_id": 11,
+        "comment": "Nějaká superzajímavá poznámka."
     },
 
     {
@@ -151,10 +165,11 @@
         "type": "subtask",
         "name": "Napsat dokumentaci",
         "date": "2025-05-28T15:55:02.000Z",
-        "category": null,
+        "category": "Udělat semestrální práci",
         "priority": null,
         "state": 0,
-        "project_id": 11
+        "project_id": 11,
+        "comment": "Nějaká superzajímavá poznámka."
     },
     {
         "id": 16,
@@ -164,7 +179,8 @@
         "category": "Něco",
         "priority": null,
         "state": 0,
-        "project_id": null
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     },
 
     {
@@ -172,9 +188,76 @@
         "type": "subtask",
         "name": "Nějaký podúkol",
         "date": "2025-04-28T15:55:02.000Z",
-        "category": null,
+        "category": "Nějaký další projekt",
         "priority": null,
         "state": 0,
-        "project_id": 16
+        "project_id": 16,
+        "comment": "Nějaká superzajímavá poznámka."
+    },
+    {
+        "id": 18,
+        "type": "subtask",
+        "name": "Nějaký podúkol",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": "Nějaký další projekt",
+        "priority": null,
+        "state": 0,
+        "project_id": 16,
+        "comment": "Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině.Nějaká superzajímavá poznámka, která je supermegaultra dlouhá, abych viděl, jak vypadá zalomený text v bublině."
+    },
+    {
+        "id": 19,
+        "type": "subtask",
+        "name": "Nějaký podúkol",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": "Nějaký další projekt",
+        "priority": null,
+        "state": 0,
+        "project_id": 16,
+        "comment": "Nějaká superzajímavá poznámka."
+    },
+    {
+        "id": 20,
+        "type": "subtask",
+        "name": "Nějaký podúkol",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": "Nějaký další projekt",
+        "priority": null,
+        "state": 0,
+        "project_id": 16,
+        "comment": "Nějaká superzajímavá poznámka."
+    },
+    {
+        "id": 21,
+        "type": "subtask",
+        "name": "Nějaký podúkol",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": "Nějaký další projekt",
+        "priority": null,
+        "state": 0,
+        "project_id": 16,
+        "comment": "Nějaká superzajímavá poznámka."
+    },
+    {
+        "id": 22,
+        "type": "subtask",
+        "name": "Nějaký podúkol",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": "Nějaký další projekt",
+        "priority": null,
+        "state": 0,
+        "project_id": 16,
+        "comment": "Nějaká superzajímavá poznámka."
+    },
+    {
+        "id": 23,
+        "type": "subtask",
+        "name": "Nějaký podúkol",
+        "date": "2025-04-28T15:55:02.000Z",
+        "category": "Nějaký další projekt",
+        "priority": null,
+        "state": 0,
+        "project_id": 16,
+        "comment": "Nějaká superzajímavá poznámka."
     }
 ]
