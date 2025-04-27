@@ -136,4 +136,14 @@ body{
 
 }
 
+#remove_button{
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+#remove_button img{
+  height: 25px;
+  width: auto;
+}
+
 

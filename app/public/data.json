@@ -259,5 +259,16 @@
         "state": 0,
         "project_id": 16,
         "comment": "Nějaká superzajímavá poznámka."
+    },
+    {
+        "id": 24,
+        "type": "task",
+        "name": "Udělat úkol",
+        "date": "2025-04-18T15:53:02.000Z",
+        "category": "Škola",
+        "priority": false,
+        "state": 0,
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     }
 ]
