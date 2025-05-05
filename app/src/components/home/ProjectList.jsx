@@ -6,7 +6,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {useEffect, useState} from "react";
 import {ListItem} from "@mui/material";
-import {useSelection} from './SelectionContext';
+import {useSelection} from '../global/SelectionContext.jsx';
 
 export default function TaskList() {
     const [openIndexes, setOpenIndexes] = useState([]);

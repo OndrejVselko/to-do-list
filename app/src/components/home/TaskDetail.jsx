@@ -1,4 +1,4 @@
-import { useSelection } from './SelectionContext';
+import { useSelection } from '../global/SelectionContext.jsx';
 import * as React from "react";
 
 export default function TaskDetail(){
