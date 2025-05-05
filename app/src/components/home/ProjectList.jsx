@@ -1,108 +1,58 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import {useEffect, useState} from "react";
-import {ListItem} from "@mui/material";
-import {useSelection} from '../global/SelectionContext.jsx';
+import { ListItem } from '@mui/material';
+import { useSelection } from '../global/SelectionContext.jsx';
 
-export default function TaskList() {
+export default function ProjectList({ data }) {
     const [openIndexes, setOpenIndexes] = useState([]);
+    const { setSelectedItem } = useSelection();
 
-    const handleClick = (index) => {
-        setOpenIndexes((prev) => {
-            if (prev.includes(index)) {
-                return prev.filter(i => i !== index);
-            }
-            return [...prev, index];
-        });
-    };
+    const handleClick = idx => setOpenIndexes(prev => prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]);
 
-    const
-        [data, setData] = useState(null);
-
-    useEffect(() => {
-        fetch('/data.json')
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                setData(data);
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }, []);
-
-    if (!data) {
-        return <div>Loading...</div>;
-    }
-
-    /*Takes data from .json file and group them
-    * grouped structure: dictionary - key is id, value is object with name and array of items (subtasks)
-    * first foreach creates keys, second fills their values*/
-    const groupByProject = (data) => {
+    const groupByProject = items => {
         const grouped = {};
-
-        data.forEach(item => {
-            if (item.type === "project") {
-                grouped[item.id] = {
-                    name: item.name,
-                    items: []
-                };
-            }
+        items.filter(item => item.type === 'project').forEach(proj => {
+            grouped[proj.id] = { name: proj.name, items: [] };
         });
-
-        data.forEach(item => {
-            if (item.type === "subtask") {
-                const group = grouped[item.project_id];
-                if (group) {
-                    group.items.push(item);
-                }
-            }
+        items.filter(item => item.type === 'subtask').forEach(sub => {
+            if (grouped[sub.project_id]) grouped[sub.project_id].items.push(sub);
         });
-        console.log(grouped);
         return grouped;
     };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
+    const formatDate = dateString => {
+        const d = new Date(dateString);
+        return d.toLocaleDateString('cs-CZ');
     };
 
-    data.sort((a, b) => new Date(a.date) - new Date(b.date));
-    const groupedData = groupByProject(data)
-
-
-    const { setSelectedItem } = useSelection();
-
+    const groupedData = groupByProject(data);
 
     return (
-        <div id="task_list" className="bubble">
+        <div id="project_list" className="bubble">
             <div className="list">
-                <h3>Úkoly:</h3>
+                <h3>Projekty:</h3>
                 <List>
-                    {Object.entries(groupedData).map(([projectId, { name, items }], index) => (
-                        <div key={projectId}>
-                            <ListItem button onClick={() => handleClick(index)}>
+                    {Object.entries(groupedData).map(([projId, { name, items }], idx) => (
+                        <div key={projId}>
+                            <ListItem button onClick={() => handleClick(idx)}>
                                 <ListItemText primary={name} />
-                                {openIndexes.includes(index) ? <ExpandLess /> : <ExpandMore />}
+                                {openIndexes.includes(idx) ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
-                            <Collapse in={openIndexes.includes(index)} timeout="auto" unmountOnExit>
+                            <Collapse in={openIndexes.includes(idx)} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
-                                    {items.map((task) => (
+                                    {items.map(task => (
                                         <ListItem key={task.id} sx={{ pl: 4 }} onClick={() => setSelectedItem(task)}>
                                             <ListItemText primary={
                                                 <>
-                                                    {task.state === 1 ? (
-                                                        <img src="src/icons/done.png" alt="done_icon" style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }} />
-                                                    ) : (
-                                                        <img src="src/icons/undone.png" alt="undone_icon" style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }} />
-                                                    )}
-                                                    {task.name + " - " + formatDate(task.date)}
+                                                    {task.state === 1
+                                                        ? <img src="src/icons/done.png" alt="done_icon" style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }} />
+                                                        : <img src="src/icons/undone.png" alt="undone_icon" style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }} />
+                                                    }
+                                                    {`${task.name} - ${formatDate(task.date)}`}
                                                 </>
                                             } />
                                         </ListItem>
@@ -116,6 +66,3 @@ export default function TaskList() {
         </div>
     );
 }
-
-
-

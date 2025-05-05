@@ -2,19 +2,23 @@
   --background_primary: #323437;
   --background_secondary: #2C2E31;
   --yellow: #E2B714;
-  --text_color: #FFFFFF
+  --text_color: #FFFFFF;
+  --text_label: #c2c2c2;
 }
 
 [theme='light']{
   --background_primary: #FFFFFF;
   --background_secondary: #FFFDEE;
-  --text_color: #323437
+  --text_color: #323437;
+  --text_label: #5e5e5e;
+
 }
 
 [theme='dark']{
   --background_primary: #323437;
   --background_secondary: #2C2E31;
-  --text_color: #FFFFFF
+  --text_color: #FFFFFF;
+  --text_label: #c2c2c2;
 }
 
 body {
