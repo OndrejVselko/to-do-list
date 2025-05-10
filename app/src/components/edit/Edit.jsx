@@ -35,7 +35,7 @@ export default function Edit({ data, setData }) {
 
     // data + setData are passed from App
     return (
-        <div style={{display: 'inline-flex'}}>
+        <div style={{display: 'inline-flex', width: '100%'}}>
             <Switching  data={data}
                         onSelectItem={setSelectedItem}
                         onModeChange={setMode} />

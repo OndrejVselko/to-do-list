@@ -38,15 +38,50 @@ export default function TasksComboBox({ data, onSelect }) {
                 if (option.type === 'task') return 'Běžné úkoly';
                 if (option.type === 'project') return 'Projekty';
                 if (option.type === 'subtask') {
-                    const name = option.project_id ? projectMap[option.project_id] : 'Bez projektu';
+                    const name = option.project_id
+                        ? projectMap[option.project_id]
+                        : 'Bez projektu';
                     return `Projekt: ${name}`;
                 }
                 return '';
             }}
             getOptionLabel={option => option.name}
             onChange={(e, value) => onSelect(value)}
-            renderInput={params => <TextField {...params} label="Vyber položku" />}
-            sx={{ flex: 1 }}
+            sx={{
+                flex: 1,
+                // Barva textu v poli i v dropdownu
+                '& .MuiInputBase-input, & .MuiAutocomplete-option': {
+                    color: 'var(--text_color)',
+                },
+                // Obrázek (fieldset) kolem TextFieldu
+                '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--yellow)',
+                },
+                // Při hoveru a focusech udržet žlutý border
+                '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--yellow)',
+                },
+                // Šipka dolů
+                '& .MuiAutocomplete-popupIndicator': {
+                    color: 'var(--text_color)',
+                },
+            }}
+            renderInput={params => (
+                <TextField
+                    {...params}
+                    label="Vyber položku"
+                    variant="outlined"
+                    // Aby label a helper text byly také v tvém theme stylu
+                    sx={{
+                        '& label': {
+                            color: 'var(--text_label)',
+                        },
+                        '& .MuiFormHelperText-root': {
+                            color: 'var(--text_color)',
+                        },
+                    }}
+                />
+            )}
         />
     );
 }

@@ -77,7 +77,7 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
         <Box className={"bubble"} id="task_form"
              component="form"
              onSubmit={handleSubmit}
-             sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2, width: 400 }}
+             sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2 }}
         >
             <FormControl component="fieldset">
                 <FormLabel component="legend" className={"mui_input"} sx={{ color: 'var(--text_color)' }}>
@@ -188,7 +188,7 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                     sx: {
                         color: 'var(--text_label)',       // běžná barva labelu
                         '&.Mui-disabled': {
-                            color: 'red !important',        // label červený, když je disabled
+                            color: 'var(--text_label)',        // label červený, když je disabled
                         },
                     }
                 }}
@@ -206,19 +206,22 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                         },
                         // outline červené, když je disabled
                         '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'red',
+                            borderColor: 'var(--text_label)',
                         },
                         // text uvnitř červený, když je disabled
                         '& .MuiInputBase-input.Mui-disabled': {
-                            color: 'red',
+                            color: 'var(--text_label)',
                         },
                     }
                 }}
                 sx={{
-                    // zachováme bílý nebo jiný text ve non-disabled stavech
+                    // normální barva textu
                     input: {
                         color: 'var(--text_color)',
-                    }
+                    },
+                    '& .MuiInputBase-root.Mui-disabled .MuiInputBase-input': {
+                        color: 'red',
+                    },
                 }}
             />
 

@@ -32,13 +32,22 @@ export default function Switching({ data, onSelectItem, onModeChange }) {
     };
 
     return (
-        <div className="bubble" style={{ height: '120px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+        <div className="bubble" style={{ height: '120px', display: 'block', gap: '10px', alignItems: 'center' }}>
             <ToggleButtonGroup
                 value={mode}
                 exclusive
                 onChange={handleModeChange}
                 aria-label="mode"
-                fullWidth
+                sx={{
+                    '& .MuiToggleButton-root': {
+                        color: 'var(--text_color)',
+                        borderColor: 'var(--yellow)',
+                        width: '80%',
+                    },
+                    '& .Mui-selected': {
+                        color: 'var(--yellow)',
+                    },
+                }}
             >
                 <ToggleButton value="create" aria-label="create">
                     Vytvořit
@@ -49,12 +58,10 @@ export default function Switching({ data, onSelectItem, onModeChange }) {
             </ToggleButtonGroup>
 
             {mode === 'edit' && (
-                <Box sx={{ mt: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <TasksComboBox
-                        data={data}
-                        onSelect={handleSelect}
-                    />
-                </Box>
+                <TasksComboBox
+                    data={data}
+                    onSelect={handleSelect}
+                />
             )}
         </div>
     );
