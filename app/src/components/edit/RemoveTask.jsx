@@ -27,7 +27,28 @@ export default function RemoveTask({ data, setData }) {
 
     // Potvrdí smazání
     const handleConfirmRemove = () => {
-        setData(prev => prev.filter(item => item.id !== selectedItem.id));
+        setData(prev => {
+            // nejprve ověříme, že položka existuje
+            const exists = prev.some(item => item.id === selectedItem.id);
+            if (!exists) {
+                // pokud neexistuje, upozorníme a nebudeme nic mazat
+                window.alert(`Položka s ID ${selectedItem.id} nebyla nalezena.`);
+                return prev;
+            }
+            // pokud je vybrán projekt, smažeme projekt i jeho podúkoly
+            if (selectedItem.type === 'project') {
+                return prev.filter(item => {
+                    if (item.type === 'subtask' && item.project_id === selectedItem.id) {
+                        return false;
+                    }
+                    return item.id !== selectedItem.id;
+                });
+            }
+            // Jinak smaž jen vybranou položku
+            return prev.filter(item => item.id !== selectedItem.id);
+        });
+
+        // reset stavů
         setSelectedItem(null);
         setInputValue('');
         setConfirmOpen(false);
@@ -53,11 +74,16 @@ export default function RemoveTask({ data, setData }) {
                 aria-describedby="confirm-dialog-description"
             >
                 <DialogTitle id="confirm-dialog-title">
-                    Opravdu si přejete odstranit úkol?
+                    Opravdu si přejete odstranit {selectedItem?.type === 'project' ? 'projekt a jeho podúkoly' : 'úkol'}?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="confirm-dialog-description">
-                        {selectedItem ? `Určitě chcete odstranit položku '${selectedItem.name}'?` : ''}
+                        {selectedItem && (
+                            <>
+                                Určitě chcete odstranit <strong>{selectedItem.name}</strong>
+                                {selectedItem.type === 'project' ? ' i všechny jeho podúkoly' : ''}?
+                            </>
+                        )}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

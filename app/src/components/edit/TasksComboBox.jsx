@@ -53,17 +53,9 @@ export default function TasksComboBox({ data, onSelect }) {
                 '& .MuiInputBase-input, & .MuiAutocomplete-option': {
                     color: 'var(--text_color)',
                 },
-                // Obrázek (fieldset) kolem TextFieldu
+                // Ohraničení fieldsetu vždy žluté
                 '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--yellow)',
-                },
-                // Při hoveru a focusech udržet žlutý border
-                '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--yellow)',
-                },
-                // Šipka dolů
-                '& .MuiAutocomplete-popupIndicator': {
-                    color: 'var(--text_color)',
+                    borderColor: 'var(--yellow) !important',
                 },
             }}
             renderInput={params => (
@@ -71,8 +63,11 @@ export default function TasksComboBox({ data, onSelect }) {
                     {...params}
                     label="Vyber položku"
                     variant="outlined"
-                    // Aby label a helper text byly také v tvém theme stylu
                     sx={{
+                        // Ohraničení i v labelu a helper textu
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'var(--yellow) !important',
+                        },
                         '& label': {
                             color: 'var(--text_label)',
                         },

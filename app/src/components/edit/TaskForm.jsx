@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import ProjectAutocomplete from "./ProjectAutocomplete.jsx";
 
-export default function TaskProjectForm({ selectedItem = null, onSubmit, data, setSelectedProject}) {
+export default function TaskProjectForm({ selectedItem = null, onSubmit, data, setSelectedProject, mode}) {
     const emptyValues = {
         type: 'task',
         name: '',
@@ -24,11 +24,12 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
     };
 
     const [values, setValues] = useState(emptyValues);
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         if (selectedItem) {
             const dateVal = selectedItem.date
-                ? selectedItem.date.slice(0, 19)
+                ? selectedItem.date.split('T')[0]
                 : '';
             setValues({
                 type: selectedItem.type || 'task',
@@ -60,16 +61,26 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
         setSelectedProject(selectedProject);  // nastavíme projekt do stavu
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const payload = {
             ...values,
             date: values.date ? new Date(values.date).toISOString() : null
         };
-        if (onSubmit) {
-            onSubmit(payload);
-        } else {
-            console.log('submit payload:', payload);
+        try {
+            if (onSubmit) {
+                await onSubmit(payload);
+            } else {
+                console.log('submit payload:', payload);
+            }
+            if (mode === 'create') {
+                setMessage('Položka byla úspěšně přidána.');
+            } else if(mode === 'edit'){
+                setMessage('Změny byly úspěšně uloženy.');
+            }
+        } catch (error) {
+            console.error(error);
+            setMessage('Nastala chyba při ukládání.');
         }
     };
 
@@ -285,6 +296,11 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
             >
                 <img src="src/icons/save.png" alt="save changes" style={{height: '25px', width: "auto"}}/>
             </Button>
+            {message && (
+                <Typography variant="body2" sx={{ color: 'var(--text_color)', mt: 1 }}>
+                    {message}
+                </Typography>
+            )}
         </Box>
     );
 }

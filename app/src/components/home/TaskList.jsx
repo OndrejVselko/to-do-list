@@ -36,7 +36,7 @@ export default function TaskList({ data }) {
     };
 
     // Sort data by date without mutating props
-    const sortedItems = [...data].filter(item => item.type === 'task')
+    const sortedItems = [...data].filter(item => item.type === 'task' && item.state === 0)
         .sort((a, b) => new Date(a.date) - new Date(b.date));
     const groupedData = groupByDate(sortedItems);
 

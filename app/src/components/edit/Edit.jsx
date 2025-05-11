@@ -19,7 +19,8 @@ export default function Edit({ data, setData }) {
             }
             setData(prevData => [
                 ...prevData,
-                {id: maxId + 1, ...formData, state: 0, selectedProject: projectId}  // Přidání nového objektu do pole s unikátním ID
+                { id: maxId + 1, ...formData, state: 0, project_id: projectId }
+                // Přidání nového objektu do pole s unikátním ID
             ]);
         }
         else if(mode==="edit"){
@@ -39,7 +40,7 @@ export default function Edit({ data, setData }) {
             <Switching  data={data}
                         onSelectItem={setSelectedItem}
                         onModeChange={setMode} />
-            <TaskForm selectedItem={selectedItem} onSubmit={handleForm} data={data} setSelectedProject={setSelectedProject}/>
+            <TaskForm selectedItem={selectedItem} onSubmit={handleForm} data={data} setSelectedProject={setSelectedProject} mode={mode}/>
             <RemoveTask data={data} setData={setData} />
 
             <ShowData data={data}/>
