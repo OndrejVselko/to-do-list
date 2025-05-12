@@ -11,9 +11,12 @@ import {
     Button,
     Typography
 } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import ProjectAutocomplete from "./ProjectAutocomplete.jsx";
 
-export default function TaskProjectForm({ selectedItem = null, onSubmit, data, setSelectedProject, mode}) {
+export default function TaskProjectForm({ selectedItem = null, onSubmit, data, setSelectedProject, mode }) {
     const emptyValues = {
         type: 'task',
         name: '',
@@ -53,12 +56,11 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
     };
 
     const handleProjectSelect = (selectedProject) => {
-        // Aktualizujeme hodnotu pro kategorii, když je vybrán projekt
         setValues(prev => ({
             ...prev,
-            category: selectedProject?.name || ''  // pokud je vybrán projekt, nastavíme jeho název jako kategorii
+            category: selectedProject?.name || ''
         }));
-        setSelectedProject(selectedProject);  // nastavíme projekt do stavu
+        setSelectedProject(selectedProject);
     };
 
     const handleSubmit = async (e) => {
@@ -75,7 +77,7 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
             }
             if (mode === 'create') {
                 setMessage('Položka byla úspěšně přidána.');
-            } else if(mode === 'edit'){
+            } else if (mode === 'edit') {
                 setMessage('Změny byly úspěšně uloženy.');
             }
         } catch (error) {
@@ -85,13 +87,13 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
     };
 
     return (
-        <Box className={"bubble"} id="task_form"
+        <Box className="bubble" id="task_form"
              component="form"
              onSubmit={handleSubmit}
              sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2 }}
         >
             <FormControl component="fieldset">
-                <FormLabel component="legend" className={"mui_input"} sx={{ color: 'var(--text_color)' }}>
+                <FormLabel component="legend" className="mui_input" sx={{ color: 'var(--text_color)' }}>
                     Typ položky
                 </FormLabel>
                 <RadioGroup
@@ -125,7 +127,7 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                     </Typography>
                     <ProjectAutocomplete
                         data={data}
-                        onSelect={handleProjectSelect}  // předáme funkci pro zpracování vybraného projektu
+                        onSelect={handleProjectSelect}
                     />
                 </Box>
             )}
@@ -137,56 +139,45 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 onChange={handleChange}
                 required
                 fullWidth
-                InputLabelProps={{
-                    sx: { color: 'var(--text_label)' }
-                }}
+                InputLabelProps={{ sx: { color: 'var(--text_label)' } }}
                 InputProps={{
                     sx: {
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // základní barva ohraničení
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // barva ohraničení při hoveru
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // barva ohraničení při focusu
-                        },
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
                     }
                 }}
-                sx={{
-                    input: { color: 'var(--text_color)' }
-                }}
+                sx={{ input: { color: 'var(--text_color)' } }}
             />
 
-            <TextField
-                label="Datum"
-                name="date"
-                type="date"
-                value={values.date}
-                onChange={handleChange}
-                InputLabelProps={{
-                    shrink: true,
-                    sx: { color: 'var(--text_color)' }
-                }}
-                InputProps={{
-                    sx: {
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // základní barva ohraničení
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // barva ohraničení při hoveru
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // barva ohraničení při focusu
-                        },
-                    }
-                }}
-                sx={{
-                    input: { color: 'var(--text_color)' }
-                }}
-                required
-                fullWidth
-            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                    label="Datum"
+                    disablePast
+                    value={values.date ? new Date(values.date) : null}
+                    onChange={(newValue) => {
+                        const isoDate = newValue ? newValue.toISOString().split('T')[0] : '';
+                        setValues(prev => ({ ...prev, date: isoDate }));
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            required
+                            fullWidth
+                            InputLabelProps={{ shrink: true, sx: { color: 'var(--text_label)' } }}
+                            InputProps={{
+                                ...params.InputProps,
+                                sx: {
+                                    '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                                }
+                            }}
+                            sx={{ input: { color: 'var(--text_color)' } }}
+                        />
+                    )}
+                />
+            </LocalizationProvider>
 
             <TextField
                 label="Kategorie"
@@ -195,62 +186,21 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 onChange={handleChange}
                 disabled={values.type === 'subtask'}
                 fullWidth
-                InputLabelProps={{
-                    sx: {
-                        color: 'var(--text_label)',       // běžná barva labelu
-                        '&.Mui-disabled': {
-                            color: 'var(--text_label)',        // label červený, když je disabled
-                        },
-                    }
-                }}
+                InputLabelProps={{ sx: { color: 'var(--text_label)', '&.Mui-disabled': { color: 'var(--text_label)' } } }}
                 InputProps={{
                     sx: {
-                        // outline ve všech běžných stavech žluté
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)',
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)',
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)',
-                        },
-                        // outline červené, když je disabled
-                        '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--text_label)',
-                        },
-                        // text uvnitř červený, když je disabled
-                        '& .MuiInputBase-input.Mui-disabled': {
-                            color: 'var(--text_label)',
-                        },
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&.Mui-disabled .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--text_label)' },
+                        '& .MuiInputBase-input.Mui-disabled': { color: 'var(--text_label)' },
                     }
                 }}
-                sx={{
-                    // normální barva textu
-                    input: {
-                        color: 'var(--text_color)',
-                    },
-                    '& .MuiInputBase-root.Mui-disabled .MuiInputBase-input': {
-                        color: 'red',
-                    },
-                }}
+                sx={{ input: { color: 'var(--text_color)' } }}
             />
 
-
-
             <FormControlLabel
-                control={
-                    <Checkbox
-                        name="priority"
-                        checked={values.priority}
-                        onChange={handleChange}
-                        sx={{
-                            '&.Mui-checked': {
-                                color: 'var(--yellow)', // Změna barvy checkboxu při zaškrtnutí
-                            },
-                        }}
-                    />
-                }
+                control={<Checkbox name="priority" checked={values.priority} onChange={handleChange} sx={{ '&.Mui-checked': { color: 'var(--yellow)' } }} />}
                 label="Priorita"
             />
 
@@ -262,40 +212,23 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 multiline
                 rows={4}
                 fullWidth
-                InputLabelProps={{
-                    sx: { color: 'var(--text_label)' }
-                }}
-                InputProps={{
-                    sx: {
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // Základní barva ohraničení
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // Barva ohraničení při hoveru
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow)', // Barva ohraničení při focusu
-                        },
-                    }
-                }}
-                sx={{
-                    textarea: { color: 'var(--text_color)' }
-                }}
+                InputLabelProps={{ sx: { color: 'var(--text_label)' } }}
+                InputProps={{ sx: {
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                    } }}
+                sx={{ textarea: { color: 'var(--text_color)' } }}
             />
 
             <Button
                 type="submit"
-                variant="outlined" // Nastavíme variant na outlined
-                sx={{
-                    borderColor: 'var(--yellow)', // Barva borderu
-                    color: 'var(--yellow)', // Barva textu
-                    '&:hover': {
-                        borderColor: 'var(--yellow)', // Barva borderu při hoveru
-                    },
-                }}
+                variant="outlined"
+                sx={{ borderColor: 'var(--yellow)', color: 'var(--yellow)', '&:hover': { borderColor: 'var(--yellow)' } }}
             >
-                <img src="src/icons/save.png" alt="save changes" style={{height: '25px', width: "auto"}}/>
+                <img src="src/icons/save.png" alt="save changes" style={{ height: 25, width: 'auto' }} />
             </Button>
+
             {message && (
                 <Typography variant="body2" sx={{ color: 'var(--text_color)', mt: 1 }}>
                     {message}
