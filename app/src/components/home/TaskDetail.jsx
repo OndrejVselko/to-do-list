@@ -1,8 +1,10 @@
 import { useSelection } from '../global/SelectionContext.jsx';
-import * as React from "react";
+import React from 'react';
+import { Button } from '@mui/material';
 
-export default function TaskDetail(){
-    const { selectedItem } = useSelection();
+// Props: data (array of tasks), setData (state updater)
+export default function TaskDetail({ data, setData }) {
+    const { selectedItem, setSelectedItem } = useSelection();
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -12,43 +14,95 @@ export default function TaskDetail(){
         return `${day}.${month}.${year}`;
     };
 
-    //component has tree returns - one for basic task and one for project subtask and one nonselected
-    if(!selectedItem){ //nothing selected
+    const handleCompletition = () => {
+        if (!selectedItem) return;
+
+        setData(prev => {
+            // 1) mark selected item done
+            let newData = prev.map(item =>
+                item.id === selectedItem.id ? { ...item, state: 1 } : item
+            );
+
+            // 2) if was subtask, check all sibling subtasks
+            if (selectedItem.type === 'subtask' && selectedItem.project_id != null) {
+                const projectId = selectedItem.project_id;
+                const subtasks = newData.filter(item =>
+                    item.type === 'subtask' && item.project_id === projectId
+                );
+                const allDone = subtasks.length > 0 && subtasks.every(st => st.state === 1);
+                if (allDone) {
+                    // mark project done
+                    newData = newData.map(item =>
+                        item.id === projectId ? { ...item, state: 1 } : item
+                    );
+                }
+            }
+
+            return newData;
+        });
+
+        // clear selection in context
+        setSelectedItem(null);
+    };
+
+    if (!selectedItem) {
         return (
-            <div className="bubble" >
+            <div className="bubble">
                 <div id="task_detail">
                     <h2>Vyberte úkol</h2>
                 </div>
             </div>
         );
     }
-    else if(selectedItem.type === "task"){
-        return ( //selected basic task, className="list" makes there better scrollbar
-            <div className="bubble">
-                <div id="task_detail" className="list">
-                    <h2> {selectedItem.priority ? (<img src="src/icons/alert.png" alt="important_icon" style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }}/>) : null}{selectedItem.name}</h2>
-                    <h3>Do {formatDate(selectedItem.date)}</h3>
-                    <h3>{!selectedItem.category ? ("Bez štítku"):("Štítek: " + selectedItem.category)}</h3>
-                    <p>{selectedItem.comment}</p>
-                </div>
-            </div>
-        );
-    }
-    else if(selectedItem.type === "subtask"){ //selected project subtask
-        return (
-            <div className="bubble" >
-                <div id="task_detail" className="list">
 
-                    <h2> {selectedItem.priority ? (<img src="src/icons/alert.png" alt="important_icon" style={{ width: "16px", height: "auto", marginRight: "8px", verticalAlign: "middle" }}/>) : null}{selectedItem.name} {selectedItem.state === 1 ? (
-                        <img src="src/icons/done.png" alt="done_icon" style={{ width: "16px", height: "auto", marginLeft: "8px", verticalAlign: "middle" }} />
-                    ) : (
-                        <img src="src/icons/undone.png" alt="undone_icon" style={{ width: "16px", height: "auto", marginLeft: "8px", verticalAlign: "middle" }} />
-                    )}</h2>
-                    <h3>Do {formatDate(selectedItem.date)}</h3>
-                    <h3>Projekt: {!selectedItem.category ? ("Bez štítku"):(selectedItem.category)}</h3>
-                    <p>{selectedItem.comment}</p>
-                </div>
+    const renderDetail = () => (
+        <div className="bubble">
+            <div id="task_detail" className="list">
+                <h2>
+                    {selectedItem.priority && (
+                        <img
+                            src="src/icons/alert.png"
+                            alt="important_icon"
+                            style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }}
+                        />
+                    )}
+                    {selectedItem.name}
+                    {selectedItem.type === 'subtask' && (
+                        selectedItem.state === 1 ? (
+                            <img
+                                src="src/icons/done.png"
+                                alt="done_icon"
+                                style={{ width: 16, marginLeft: 8, verticalAlign: 'middle' }}
+                            />
+                        ) : (
+                            <img
+                                src="src/icons/undone.png"
+                                alt="undone_icon"
+                                style={{ width: 16, marginLeft: 8, verticalAlign: 'middle' }}
+                            />
+                        )
+                    )}
+                </h2>
+                <h3>Do {formatDate(selectedItem.date)}</h3>
+                <h3>
+                    {selectedItem.type === 'subtask' ? 'Projekt: ' : 'Štítek: '}
+                    {selectedItem.category || 'Bez štítku'}
+                </h3>
+                <p>{selectedItem.comment}</p>
+                <Button
+                    onClick={handleCompletition}
+                    variant="outlined"
+                    sx={{
+                        borderColor: 'var(--yellow)',
+                        color: 'var(--yellow)',
+                        '&:hover': { borderColor: 'var(--yellow)' },
+                    }}
+                >
+                    Splnit úkol
+                </Button>
             </div>
-        );
-    }
-};
+        </div>
+    );
+
+    return renderDetail();
+}

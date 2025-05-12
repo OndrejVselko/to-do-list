@@ -11,16 +11,24 @@ export default function ProjectList({ data }) {
     const [openIndexes, setOpenIndexes] = useState([]);
     const { setSelectedItem } = useSelection();
 
-    const handleClick = idx => setOpenIndexes(prev => prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]);
+    const handleClick = idx =>
+        setOpenIndexes(prev =>
+            prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
+        );
 
     const groupByProject = items => {
         const grouped = {};
-        items.filter(item => item.type === 'project').forEach(proj => {
-            grouped[proj.id] = { name: proj.name, items: [] };
-        });
-        items.filter(item => item.type === 'subtask').forEach(sub => {
-            if (grouped[sub.project_id]) grouped[sub.project_id].items.push(sub);
-        });
+        // only projects with state === 0
+        items
+            .filter(item => item.type === 'project' && item.state === 0)
+            .forEach(proj => {
+                grouped[proj.id] = { name: proj.name, items: [] };
+            });
+        items
+            .filter(item => item.type === 'subtask')
+            .forEach(sub => {
+                if (grouped[sub.project_id]) grouped[sub.project_id].items.push(sub);
+            });
         return grouped;
     };
 
@@ -46,15 +54,26 @@ export default function ProjectList({ data }) {
                                 <List component="div" disablePadding>
                                     {items.map(task => (
                                         <ListItem key={task.id} sx={{ pl: 4 }} onClick={() => setSelectedItem(task)}>
-                                            <ListItemText primary={
-                                                <>
-                                                    {task.state === 1
-                                                        ? <img src="src/icons/done.png" alt="done_icon" style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }} />
-                                                        : <img src="src/icons/undone.png" alt="undone_icon" style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }} />
-                                                    }
-                                                    {`${task.name} - ${formatDate(task.date)}`}
-                                                </>
-                                            } />
+                                            <ListItemText
+                                                primary={
+                                                    <>
+                                                        {task.state === 1 ? (
+                                                            <img
+                                                                src="src/icons/done.png"
+                                                                alt="done_icon"
+                                                                style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }}
+                                                            />
+                                                        ) : (
+                                                            <img
+                                                                src="src/icons/undone.png"
+                                                                alt="undone_icon"
+                                                                style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }}
+                                                            />
+                                                        )}
+                                                        {`${task.name} - ${formatDate(task.date)}`}
+                                                    </>
+                                                }
+                                            />
                                         </ListItem>
                                     ))}
                                 </List>
