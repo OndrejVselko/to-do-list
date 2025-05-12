@@ -2,61 +2,57 @@ import React, { useMemo } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
+/**
+ * TasksComboBox
+ * Autocomplete selector for tasks, projects, and subtasks.
+ * @param {Array} data - Items with types 'task' | 'project' | 'subtask'
+ * @param {Function} onSelect - Callback when an option is selected
+ */
 export default function TasksComboBox({ data, onSelect }) {
-    const projectMap = useMemo(() => {
+    // Build a lookup of project names by ID
+    const projectMap = useMemo(
+        () =>
+            data
+                .filter(item => item.type === 'project')
+                .reduce((map, { id, name }) => ({ ...map, [id]: name }), {}),
+        [data]
+    );
+
+    // Combine tasks, projects, and subtasks into one list
+    const options = useMemo(() => {
+        const tasks    = data.filter(item => item.type === 'task');
         const projects = data.filter(item => item.type === 'project');
-        return projects.reduce((map, project) => {
-            map[project.id] = project.name;
-            return map;
-        }, {});
-    }, [data]);
+        const subtasks = data
+            .filter(item => item.type === 'subtask')
+            .map(sub => ({
+                ...sub,
+                // add a display label for grouping
+                group: sub.project_id ? projectMap[sub.project_id] : 'Bez projektu'
+            }));
 
-    const orderedOptions = useMemo(() => {
-        const tasks = data.filter(item => item.type === 'task');
-        const projects = data.filter(item => item.type === 'project');
-        const subtasks = data.filter(item => item.type === 'subtask');
-
-        const groupedSubtasks = subtasks.reduce((groups, subtask) => {
-            const key = subtask.project_id || 'no_project';
-            if (!groups[key]) groups[key] = [];
-            groups[key].push(subtask);
-            return groups;
-        }, {});
-
-        return [
-            ...tasks,
-            ...projects,
-            ...Object.values(groupedSubtasks).flat()
-        ];
-    }, [data]);
+        return [...tasks, ...projects, ...subtasks];
+    }, [data, projectMap]);
 
     return (
         <Autocomplete
             disablePortal
-            options={orderedOptions}
-            groupBy={option => {
-                if (option.type === 'task') return 'Běžné úkoly';
-                if (option.type === 'project') return 'Projekty';
-                if (option.type === 'subtask') {
-                    const name = option.project_id
-                        ? projectMap[option.project_id]
-                        : 'Bez projektu';
-                    return `Projekt: ${name}`;
+            options={options}
+            groupBy={opt => {
+                // Determine group title based on type
+                switch (opt.type) {
+                    case 'task':    return 'Běžné úkoly';
+                    case 'project': return 'Projekty';
+                    case 'subtask': return `Projekt: ${opt.group}`;
+                    default:        return '';
                 }
-                return '';
             }}
-            getOptionLabel={option => option.name}
-            onChange={(e, value) => onSelect(value)}
+            getOptionLabel={opt => opt.name}
+            onChange={(_, value) => onSelect(value)}
             sx={{
                 flex: 1,
-                // Barva textu v poli i v dropdownu
-                '& .MuiInputBase-input, & .MuiAutocomplete-option': {
-                    color: 'var(--text_color)',
-                },
-                // Ohraničení fieldsetu vždy žluté
                 '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'var(--yellow) !important',
-                },
+                    borderColor: 'var(--yellow) !important'
+                }
             }}
             renderInput={params => (
                 <TextField
@@ -64,16 +60,9 @@ export default function TasksComboBox({ data, onSelect }) {
                     label="Vyber položku"
                     variant="outlined"
                     sx={{
-                        // Ohraničení i v labelu a helper textu
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: 'var(--yellow) !important',
-                        },
-                        '& label': {
-                            color: 'var(--text_label)',
-                        },
-                        '& .MuiFormHelperText-root': {
-                            color: 'var(--text_color)',
-                        },
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow) !important' },
+                        '& label':           { color: 'var(--text_label)' },
+                        '& label.Mui-focused': { color: 'var(--yellow)' }
                     }}
                 />
             )}
