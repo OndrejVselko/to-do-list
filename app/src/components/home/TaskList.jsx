@@ -1,3 +1,4 @@
+// src/components/TaskList.jsx
 import React, { useState } from 'react';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
@@ -11,22 +12,30 @@ export default function TaskList({ data }) {
     const [openIndexes, setOpenIndexes] = useState([]);
     const { setSelectedItem } = useSelection();
 
-    // Group tasks by date or priority
-    const groupByDate = (items) => {
+    // pomocná: začátek dneška
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Only tasks with state 0 and date >= dnes
+    const filtered = data
+        .filter(item => item.type === 'task' && item.state === 0)
+        .filter(item => new Date(item.date) >= today);
+
+    const groupByDate = items => {
         const grouped = {};
-        const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}.${month}.${year}`;
+        const fmt = dateString => {
+            const d = new Date(dateString);
+            const dd = String(d.getDate()).padStart(2, '0');
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            return `${dd}.${mm}.${yyyy}`;
         };
         grouped['Důležité'] = [];
-        items.filter(item => item.type === 'task').forEach(item => {
+        items.forEach(item => {
             if (item.priority) {
                 grouped['Důležité'].push(item);
             } else {
-                const key = formatDate(item.date);
+                const key = fmt(item.date);
                 if (!grouped[key]) grouped[key] = [];
                 grouped[key].push(item);
             }
@@ -35,17 +44,13 @@ export default function TaskList({ data }) {
         return grouped;
     };
 
-    // Sort data by date without mutating props
-    const sortedItems = [...data].filter(item => item.type === 'task' && item.state === 0)
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
-    const groupedData = groupByDate(sortedItems);
+    const sorted = [...filtered].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const groupedData = groupByDate(sorted);
 
-    const handleClick = (index) => {
-        setOpenIndexes(prev => prev.includes(index)
-            ? prev.filter(i => i !== index)
-            : [...prev, index]
+    const handleClick = idx =>
+        setOpenIndexes(prev =>
+            prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
         );
-    };
 
     return (
         <div id="task_list" className="bubble">
@@ -55,20 +60,30 @@ export default function TaskList({ data }) {
                     {Object.entries(groupedData).map(([date, tasks], idx) => (
                         <div key={date}>
                             <ListItem button onClick={() => handleClick(idx)}>
-                                <ListItemText primary={
-                                    <>
-                                        {date === 'Důležité' && (
-                                            <img src="src/icons/alert.png" alt="important_icon" style={{ width: '16px', marginRight: 8 }} />
-                                        )}
-                                        {date}
-                                    </>
-                                } />
+                                <ListItemText
+                                    primary={
+                                        <>
+                                            {date === 'Důležité' && (
+                                                <img
+                                                    src="src/icons/alert.png"
+                                                    alt="important_icon"
+                                                    style={{ width: 16, marginRight: 8 }}
+                                                />
+                                            )}
+                                            {date}
+                                        </>
+                                    }
+                                />
                                 {openIndexes.includes(idx) ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
                             <Collapse in={openIndexes.includes(idx)} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding>
                                     {tasks.map(task => (
-                                        <ListItem key={task.id} sx={{ pl: 4 }} onClick={() => setSelectedItem(task)}>
+                                        <ListItem
+                                            key={task.id}
+                                            sx={{ pl: 4 }}
+                                            onClick={() => setSelectedItem(task)}
+                                        >
                                             <ListItemText primary={task.name} />
                                         </ListItem>
                                     ))}

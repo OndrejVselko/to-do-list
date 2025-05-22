@@ -182,7 +182,6 @@
         "project_id": null,
         "comment": "Nějaká superzajímavá poznámka."
     },
-
     {
         "id": 17,
         "type": "subtask",
@@ -292,5 +291,104 @@
         "state": 0,
         "project_id": null,
         "comment": "Něco z roku 2024"
+    },
+    {
+        "id": 27,
+        "type": "task",
+        "name": "Koupit dárky na Vánoce",
+        "date": "2025-12-10T10:00:00.000Z",
+        "category": "Rodina",
+        "priority": true,
+        "state": 0,
+        "project_id": null,
+        "comment": "Nezapomenout na bráchu a jeho oblíbený komiks."
+    },
+    {
+        "id": 28,
+        "type": "task",
+        "name": "Zapsat se na kurz španělštiny",
+        "date": "2025-09-01T09:00:00.000Z",
+        "category": "Osobní rozvoj",
+        "priority": false,
+        "state": 0,
+        "project_id": null,
+        "comment": ""
+    },
+    {
+        "id": 29,
+        "type": "project",
+        "name": "Příprava letní dovolené",
+        "date": "2025-07-01T00:00:00.000Z",
+        "category": "Cestování",
+        "priority": null,
+        "state": 0,
+        "project_id": null,
+        "comment": "Letos bych chtěl jet do Norska nebo Skotska."
+    },
+    {
+        "id": 30,
+        "type": "subtask",
+        "name": "Zjistit ceny letenek",
+        "date": "2025-06-10T12:00:00.000Z",
+        "category": "Příprava letní dovolené",
+        "priority": false,
+        "state": 0,
+        "project_id": 29,
+        "comment": ""
+    },
+    {
+        "id": 31,
+        "type": "subtask",
+        "name": "Zarezervovat ubytování",
+        "date": "2025-06-20T12:00:00.000Z",
+        "category": "Příprava letní dovolené",
+        "priority": false,
+        "state": 0,
+        "project_id": 29,
+        "comment": "Airbnb nebo něco levného přes Booking."
+    },
+    {
+        "id": 32,
+        "type": "subtask",
+        "name": "Naplánovat výlety",
+        "date": "2025-06-25T12:00:00.000Z",
+        "category": "Příprava letní dovolené",
+        "priority": false,
+        "state": 0,
+        "project_id": 29,
+        "comment": "Zvážit fjordy, túry a muzea."
+    },
+    {
+        "id": 33,
+        "type": "task",
+        "name": "Změřit si krevní tlak",
+        "date": "2025-06-15T08:30:00.000Z",
+        "category": "Zdraví",
+        "priority": false,
+        "state": 0,
+        "project_id": null,
+        "comment": "Měřit ráno nalačno."
+    },
+    {
+        "id": 34,
+        "type": "task",
+        "name": "Záloha notebooku",
+        "date": "2025-06-10T18:00:00.000Z",
+        "category": "Technika",
+        "priority": true,
+        "state": 0,
+        "project_id": null,
+        "comment": "Použít externí disk a Google Drive."
+    },
+    {
+        "id": 35,
+        "type": "project",
+        "name": "Prošlý projekt",
+        "date": "2025-03-29T15:55:02.000Z",
+        "category": "Test",
+        "priority": null,
+        "state": 0,
+        "project_id": null,
+        "comment": "Nějaká superzajímavá poznámka."
     }
 ]

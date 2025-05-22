@@ -35,7 +35,7 @@ function App() {
             <Navbar />
             <ThemeButton />
             <AccountButton />
-            <NewTaskButton />
+            <NewTaskButton data={data} setData={setData}/>
             <div className="container">
                 <Routes>
                     {/* Pass data + setter to routes */}
