@@ -21,40 +21,32 @@ export default function TasksGrid({ data }) {
             return acc;
         }, {});
 
-    // Definujeme sloupce, včetně překladu typu
+    // Definujeme sloupce, včetně pevné šířky
     const columns = [
+        { field: 'typeLabel', headerName: 'Typ', width: 200 },
+        { field: 'name', headerName: 'Název', flex: 2, minWidth: 500 },
         {
-            field: 'typeLabel',
-            headerName: 'Typ',
-            flex: 1,
-            minWidth: 120,
-        },
-        { field: 'name', headerName: 'Název', flex: 2, minWidth: 150 },
-        {
-            field: 'date',
-            headerName: 'Datum',
-            flex: 1,
-            minWidth: 120,
+            field: 'date', headerName: 'Datum', width: 100,
             cellClassName: (params) => {
                 const dateObj = new Date(params.row.rawDate);
-                const isOverdue = params.row.state === 0 && dateObj < new Date();
+                const isOverdue = params.row.state === 0 && dateObj < now;
                 if (params.row.state === 1) return 'state-1-cell';
                 if (isOverdue) return 'state-overdue-cell';
                 return 'state-0-cell';
             },
         },
-        { field: 'category', headerName: 'Kategorie', flex: 1, minWidth: 140 },
+        { field: 'category', headerName: 'Kategorie', width: 200 },
     ];
 
-    // Připravíme řádky s typeLabel a projectName
+    // Příprava řádků
     const rows = data
-        .filter((r) => r.type === 'task' || r.type === 'project' || r.type === 'subtask')
+        .filter((r) => ['task', 'project', 'subtask'].includes(r.type))
         .sort((a, b) => new Date(a.date) - new Date(b.date))
         .map((r) => {
             let typeLabel;
             if (r.type === 'project') typeLabel = 'Projekt';
             else if (r.type === 'task') typeLabel = 'Úkol';
-            else if (r.type === 'subtask') {
+            else {
                 const projName = projectsMap[r.project_id] || 'Neznámý projekt';
                 typeLabel = `Podúkol / ${projName}`;
             }
@@ -72,8 +64,9 @@ export default function TasksGrid({ data }) {
     return (
         <Box
             sx={{
-                height: 500,
-                width: '100%',
+                height: "60vh",
+                width: 1000,
+                mx: 'auto',
                 overflow: 'hidden',
                 '& *::-webkit-scrollbar': { width: '8px', height: '8px' },
                 '& *::-webkit-scrollbar-track': { background: 'var(--background_primary)', borderRadius: '15px' },
@@ -102,7 +95,7 @@ export default function TasksGrid({ data }) {
                     '& .MuiDataGrid-footerContainer .MuiSvgIcon-root': { color: 'var(--yellow)' },
                     '& .MuiDataGrid-row': { backgroundColor: 'var(--background_primary)', borderBottom: '1px solid var(--yellow)' },
                     '& .MuiDataGrid-row:hover': { backgroundColor: 'var(--background_secondary)' },
-                    '& .state-0-cell': { color: 'var(--text-color)' },
+                    '& .state-0-cell': { color: 'var(--text_color)' },
                     '& .state-1-cell': { color: '#7af67a' },
                     '& .state-overdue-cell': { color: '#ff3939' },
                 }}

@@ -8,7 +8,8 @@ import {
     Select,
     MenuItem,
     FormControlLabel,
-    Checkbox
+    Checkbox,
+    Box
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -29,73 +30,142 @@ export default function FilterControls({
                                            dateTo,
                                            setDateTo
                                        }) {
+    // common sx pro všechny outlined inputs
+    const commonSX = {
+        // okraj — normal / hover / focus / active
+        '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--yellow)',
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--yellow)',
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--yellow)',
+        },
+        '&:active .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--yellow)',
+        },
+        // text uživatele
+        '& .MuiInputBase-input': {
+            color: 'var(--text_color)',
+        },
+        // label — normal / focus
+        '& .MuiInputLabel-root': {
+            color: 'var(--text_label)',
+        },
+        '& .MuiInputLabel-root.Mui-focused': {
+            color: 'var(--text_label)',
+        }
+    };
+
     return (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" mb={2}>
-            <TextField
-                label="Hledat podle názvu"
-                variant="outlined"
-                value={searchName}
-                onChange={e => setSearchName(e.target.value)}
-            />
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" mb={2}>
 
-            <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                <InputLabel id="type-label">Typ</InputLabel>
-                <Select
-                    labelId="type-label"
-                    value={filterType}
-                    label="Typ"
+                {/* TextField */}
+                <TextField
+                    label="Hledat podle názvu"
                     variant="outlined"
-                    onChange={e => setFilterType(e.target.value)}
-                >
-                    <MenuItem value="all">Vše</MenuItem>
-                    <MenuItem value="task">Task</MenuItem>
-                    <MenuItem value="project">Project</MenuItem>
-                    <MenuItem value="subtask">Subtask</MenuItem>
-                </Select>
-            </FormControl>
+                    value={searchName}
+                    onChange={e => setSearchName(e.target.value)}
+                    sx={commonSX}
+                />
 
-            <Autocomplete
-                sx={{ minWidth: 240 }}
-                options={projectOptions}
-                getOptionLabel={option => option.name}
-                value={filterProject}
-                onChange={(_, newValue) => setFilterProject(newValue)}
-                renderInput={params => <TextField {...params} label="Projekt (subtask)" variant="outlined" />}
-                clearOnEscape
-            />
+                {/* Type Select */}
+                <FormControl variant="outlined" sx={{ minWidth: 120, ...commonSX }}>
+                    <InputLabel id="type-label">Typ</InputLabel>
+                    <Select
+                        labelId="type-label"
+                        value={filterType}
+                        label="Typ"
+                        onChange={e => setFilterType(e.target.value)}
+                        sx={{
+                            '& .MuiSelect-select': {
+                                color: 'var(--text_color)',
+                            }
+                        }}
+                    >
+                        <MenuItem value="all">Vše</MenuItem>
+                        <MenuItem value="task">Task</MenuItem>
+                        <MenuItem value="project">Project</MenuItem>
+                        <MenuItem value="subtask">Subtask</MenuItem>
+                    </Select>
+                </FormControl>
 
-            <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-                <InputLabel id="state-label">Stav</InputLabel>
-                <Select
-                    labelId="state-label"
-                    value={filterState}
-                    label="Stav"
-                    variant="outlined"
-                    onChange={e => setFilterState(e.target.value)}
-                >
-                    <MenuItem value="all">Vše</MenuItem>
-                    <MenuItem value="0">Neprovedené</MenuItem>
-                    <MenuItem value="1">Provedené</MenuItem>
-                </Select>
-            </FormControl>
+                {/* Autocomplete */}
+                <Autocomplete
+                    sx={{ minWidth: 240, ...commonSX }}
+                    options={projectOptions}
+                    getOptionLabel={option => option.name}
+                    value={filterProject}
+                    onChange={(_, newValue) => setFilterProject(newValue)}
+                    renderInput={params => (
+                        <TextField
+                            {...params}
+                            label="Projekt (subtask)"
+                            variant="outlined"
+                            sx={commonSX}
+                        />
+                    )}
+                    clearOnEscape
+                />
 
-            <FormControlLabel
-                control={<Checkbox checked={onlyPriority} onChange={e => setOnlyPriority(e.target.checked)} />}
-                label="Pouze priorita"
-            />
+                {/* State Select */}
+                <FormControl variant="outlined" sx={{ minWidth: 120, ...commonSX }}>
+                    <InputLabel id="state-label">Stav</InputLabel>
+                    <Select
+                        labelId="state-label"
+                        value={filterState}
+                        label="Stav"
+                        onChange={e => setFilterState(e.target.value)}
+                        sx={{
+                            '& .MuiSelect-select': {
+                                color: 'var(--text_color)',
+                            }
+                        }}
+                    >
+                        <MenuItem value="all">Vše</MenuItem>
+                        <MenuItem value="0">Neprovedené</MenuItem>
+                        <MenuItem value="1">Provedené</MenuItem>
+                    </Select>
+                </FormControl>
 
-            <DatePicker
-                label="Od"
-                value={dateFrom}
-                onChange={newValue => setDateFrom(newValue)}
-                renderInput={params => <TextField {...params} />}
-            />
-            <DatePicker
-                label="Do"
-                value={dateTo}
-                onChange={newValue => setDateTo(newValue)}
-                renderInput={params => <TextField {...params} />}
-            />
-        </Stack>
+                {/* Checkbox */}
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={onlyPriority}
+                            onChange={e => setOnlyPriority(e.target.checked)}
+                            sx={{
+                                color: 'var(--yellow)',
+                                '&.Mui-checked': {
+                                    color: 'var(--yellow)',
+                                }
+                            }}
+                        />
+                    }
+                    label="Pouze priorita"
+                />
+
+                {/* Date Pickers */}
+                <DatePicker
+                    label="Od"
+                    value={dateFrom}
+                    onChange={newValue => setDateFrom(newValue)}
+                    renderInput={params => (
+                        <TextField {...params} variant="outlined" sx={commonSX} />
+                    )}
+                />
+                <DatePicker
+                    label="Do"
+                    value={dateTo}
+                    onChange={newValue => setDateTo(newValue)}
+                    renderInput={params => (
+                        <TextField {...params} variant="outlined" sx={commonSX} />
+                    )}
+                />
+
+            </Stack>
+        </Box>
     );
 }

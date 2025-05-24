@@ -18,15 +18,13 @@ export default function ViewSwitcher({ data }) {
 
     // project options for filter
     const projectOptions = useMemo(
-        () => data
-            .filter(item => item.type === 'project')
-            .map(proj => ({ id: proj.id, name: proj.name })),
+        () => data.filter((item) => item.type === 'project').map((proj) => ({ id: proj.id, name: proj.name })),
         [data]
     );
 
     // filtered data
     const filteredData = useMemo(() => {
-        return data.filter(item => {
+        return data.filter((item) => {
             if (searchName && !item.name.toLowerCase().includes(searchName.toLowerCase())) return false;
             if (filterType !== 'all' && item.type !== filterType) return false;
             if (filterState !== 'all') {
@@ -35,11 +33,8 @@ export default function ViewSwitcher({ data }) {
             }
             if (onlyPriority && !item.priority) return false;
             if (filterProject) {
-                if (item.type === 'subtask') {
-                    if (item.project_id !== filterProject.id) return false;
-                } else {
-                    return false;
-                }
+                if (item.type === 'subtask' && item.project_id !== filterProject.id) return false;
+                if (item.type !== 'subtask') return false;
             }
             const itemDate = new Date(item.date);
             if (dateFrom && itemDate < dateFrom) return false;
@@ -49,26 +44,43 @@ export default function ViewSwitcher({ data }) {
     }, [data, searchName, filterType, filterState, onlyPriority, filterProject, dateFrom, dateTo]);
 
     // view state
-    const [view, setView] = useState('table'); // 'chart' | 'table'
+    const [view, setView] = useState('table');
     const handleViewChange = (_, newView) => {
         if (newView) setView(newView);
     };
 
     return (
         <Box>
-            <ToggleButtonGroup
-                value={view}
-                exclusive
-                onChange={handleViewChange}
-                aria-label="view-switch"
-                sx={{ mb: 2 }}
-            >
-                <ToggleButton value="table" aria-label="chart">Tabulka</ToggleButton>
-                <ToggleButton value="chart" aria-label="table">Graf</ToggleButton>
-            </ToggleButtonGroup>
+            {/* Center just the toggle buttons */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                <ToggleButtonGroup
+                    value={view}
+                    exclusive
+                    onChange={handleViewChange}
+                    aria-label="view-switch"
+                    sx={{
+                        mt: 1,
+                        '& .MuiToggleButton-root': {
+                            color: 'var(--text_color)',
+                            borderColor: 'var(--yellow)',
+                            width: '80%',
+                        },
+                        '& .Mui-selected': {
+                            color: 'var(--yellow)',
+                        },
+                    }}
+                >
+                    <ToggleButton value="table" aria-label="table-view">
+                        Tabulka
+                    </ToggleButton>
+                    <ToggleButton value="chart" aria-label="chart-view">
+                        Graf
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </Box>
 
             {view === 'chart' ? (
-                <TasksBarChart data={data} />
+                <TasksBarChart data={filteredData} />
             ) : (
                 <Box>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -90,7 +102,9 @@ export default function ViewSwitcher({ data }) {
                             setDateTo={setDateTo}
                         />
                     </LocalizationProvider>
-                    <TasksTable data={filteredData} />
+                    <Box sx={{ mt: 2 }}>
+                        <TasksTable data={filteredData} />
+                    </Box>
                 </Box>
             )}
         </Box>
