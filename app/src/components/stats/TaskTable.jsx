@@ -21,12 +21,12 @@ export default function TasksGrid({ data }) {
             return acc;
         }, {});
 
-    // Definujeme sloupce, včetně pevné šířky
+    // Definujeme sloupce s procentuálními hodnotami (poměr flex)
     const columns = [
-        { field: 'typeLabel', headerName: 'Typ', width: 200 },
-        { field: 'name', headerName: 'Název', flex: 2, minWidth: 500 },
+        { field: 'typeLabel', headerName: 'Typ', flex: 0.2 },       // 20%
+        { field: 'name',      headerName: 'Název', flex: 0.5, minWidth: 200 }, // 50%
         {
-            field: 'date', headerName: 'Datum', width: 100,
+            field: 'date',     headerName: 'Datum', flex: 0.1,    // 10%
             cellClassName: (params) => {
                 const dateObj = new Date(params.row.rawDate);
                 const isOverdue = params.row.state === 0 && dateObj < now;
@@ -35,7 +35,7 @@ export default function TasksGrid({ data }) {
                 return 'state-0-cell';
             },
         },
-        { field: 'category', headerName: 'Kategorie', width: 200 },
+        { field: 'category',   headerName: 'Kategorie', flex: 0.2 }  // 20%
     ];
 
     // Příprava řádků
@@ -64,8 +64,8 @@ export default function TasksGrid({ data }) {
     return (
         <Box
             sx={{
-                height: "60vh",
-                width: 1000,
+                height: '60vh',
+                width: '80vw',                  // Nastaveno na 80vw
                 mx: 'auto',
                 overflow: 'hidden',
                 '& *::-webkit-scrollbar': { width: '8px', height: '8px' },
@@ -98,6 +98,8 @@ export default function TasksGrid({ data }) {
                     '& .state-0-cell': { color: 'var(--text_color)' },
                     '& .state-1-cell': { color: '#7af67a' },
                     '& .state-overdue-cell': { color: '#ff3939' },
+                    // Barva prázdného místa
+                    '& .MuiDataGrid-virtualScroller': { backgroundColor: 'var(--background_primary)' },
                 }}
             />
         </Box>

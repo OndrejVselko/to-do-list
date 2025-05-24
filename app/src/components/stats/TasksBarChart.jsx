@@ -1,4 +1,3 @@
-// src/components/TasksBarChart.jsx
 import React, { useState, useMemo } from 'react';
 import {
     BarChart,
@@ -55,61 +54,107 @@ export default function TasksBarChart({ data }) {
     }, [data, selectedYear]);
 
     return (
-        <Box mb={4}>
-            <FormControl sx={{ minWidth: 120, mb: 2 }}>
-                <InputLabel id="year-select-label">Rok</InputLabel>
-                <Select
-                    labelId="year-select-label"
-                    value={selectedYear}
-                    label="Rok"
-                    onChange={e => setSelectedYear(e.target.value)}
-                >
-                    {years.map(year => (
-                        <MenuItem key={year} value={year}>{year}</MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                    <XAxis
-                        dataKey="month"
-                        stroke="var(--text_color)"
-                        tick={{ fill: 'var(--text_color)', fontSize: 12 }}
-                        tickLine={{ stroke: 'var(--text_color)' }}
-                        axisLine={{ stroke: 'var(--text_color)' }}
-                    />
-                    <YAxis
-                        allowDecimals={false}
-                        stroke="var(--text_color)"
-                        tick={{ fill: 'var(--text_color)', fontSize: 12 }}
-                        tickLine={{ stroke: 'var(--text_color)' }}
-                        axisLine={{ stroke: 'var(--text_color)' }}
-                    />
-                    <Tooltip content={<CustomTooltip />} cursor={{ fill: '#999999' }} />
-                    <Legend
-                        wrapperStyle={{ color: 'var(--text_color)' }}
-                        iconType="square"
-                    />
-                    <Bar
-                        dataKey="pending"
-                        name="Neprovedené"
-                        fillOpacity={0}
-                        stroke="#ff3939"
-                        strokeWidth={2}
-                        barSize={40}
-                        fill="#ff3939"
-                    />
-                    <Bar
-                        dataKey="completed"
-                        name="Provedené"
-                        fillOpacity={0}
-                        stroke="#7af67a"
-                        strokeWidth={2}
-                        barSize={40}
-                        fill="#7af67a"
-                    />
-                </BarChart>
-            </ResponsiveContainer>
-        </Box>
+        <>
+
+            <Box
+                sx={{
+                    width: '80vw',
+                    border: '2px solid var(--yellow)',
+                    borderRadius: '15px',
+                    p: 2,
+                    mx: 'auto',
+                }}
+            >
+                <FormControl sx={{ minWidth: 120, mb: 2 }}>
+                    <InputLabel
+                        id="year-select-label"
+                        sx={{
+                            color: 'var(--yellow)',
+                            '&.Mui-focused': {
+                                color: 'var(--yellow)',
+                            },
+                            '&.MuiInputLabel-shrink': {
+                                color: 'var(--yellow)',
+                            }
+                        }}
+                    >
+                        Rok
+                    </InputLabel>
+
+                    <Select
+                        labelId="year-select-label"
+                        value={selectedYear}
+                        label="Rok"
+                        variant="outlined"
+                        onChange={e => setSelectedYear(e.target.value)}
+                        sx={{
+                            color: 'var(--text_color)', // 👈 barva samotného textu
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'var(--yellow)',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'var(--yellow)',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'var(--yellow)',
+                            },
+                            '& .MuiSelect-icon': {
+                                color: 'var(--text_color)', // 👈 barva ikony (šipky)
+                            }
+                        }}
+                    >
+                        {years.map(year => (
+                            <MenuItem key={year} value={year}>
+                                {year}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                </FormControl>
+                <Box mb={4}>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                            <XAxis
+                                dataKey="month"
+                                stroke="var(--text_color)"
+                                tick={{ fill: 'var(--text_color)', fontSize: 12 }}
+                                tickLine={{ stroke: 'var(--text_color)' }}
+                                axisLine={{ stroke: 'var(--text_color)' }}
+                            />
+                            <YAxis
+                                allowDecimals={false}
+                                stroke="var(--text_color)"
+                                tick={{ fill: 'var(--text_color)', fontSize: 12 }}
+                                tickLine={{ stroke: 'var(--text_color)' }}
+                                axisLine={{ stroke: 'var(--text_color)' }}
+                            />
+                            <Tooltip content={<CustomTooltip />} cursor={{ fill: '#999999' }} />
+                            <Legend
+                                wrapperStyle={{ color: 'var(--text_color)' }}
+                                iconType="square"
+                            />
+                            <Bar
+                                dataKey="pending"
+                                name="Neprovedené"
+                                fillOpacity={0}
+                                stroke="#ff3939"
+                                strokeWidth={2}
+                                barSize={40}
+                                fill="#ff3939"
+                            />
+                            <Bar
+                                dataKey="completed"
+                                name="Provedené"
+                                fillOpacity={0}
+                                stroke="#7af67a"
+                                strokeWidth={2}
+                                barSize={40}
+                                fill="#7af67a"
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </Box>
+            </Box>
+        </>
     );
 }

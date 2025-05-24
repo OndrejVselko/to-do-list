@@ -7,7 +7,7 @@ import TasksBarChart from './TasksBarChart.jsx';
 import TasksTable from './TaskTable.jsx';
 
 export default function ViewSwitcher({ data }) {
-    // filter state
+    // Stav filtrů
     const [searchName, setSearchName] = useState('');
     const [filterType, setFilterType] = useState('all');
     const [filterState, setFilterState] = useState('all');
@@ -16,13 +16,16 @@ export default function ViewSwitcher({ data }) {
     const [dateFrom, setDateFrom] = useState(null);
     const [dateTo, setDateTo] = useState(null);
 
-    // project options for filter
+    // Možnosti projektů pro select
     const projectOptions = useMemo(
-        () => data.filter((item) => item.type === 'project').map((proj) => ({ id: proj.id, name: proj.name })),
+        () =>
+            data
+                .filter((item) => item.type === 'project')
+                .map((proj) => ({ id: proj.id, name: proj.name })),
         [data]
     );
 
-    // filtered data
+    // Filtrovaná data pouze pro tabulku
     const filteredData = useMemo(() => {
         return data.filter((item) => {
             if (searchName && !item.name.toLowerCase().includes(searchName.toLowerCase())) return false;
@@ -43,7 +46,7 @@ export default function ViewSwitcher({ data }) {
         });
     }, [data, searchName, filterType, filterState, onlyPriority, filterProject, dateFrom, dateTo]);
 
-    // view state
+    // Stav přepínače pohledu
     const [view, setView] = useState('table');
     const handleViewChange = (_, newView) => {
         if (newView) setView(newView);
@@ -51,7 +54,7 @@ export default function ViewSwitcher({ data }) {
 
     return (
         <Box>
-            {/* Center just the toggle buttons */}
+            {/* Toggle mezi tabulkou a grafem */}
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                 <ToggleButtonGroup
                     value={view}
@@ -65,8 +68,10 @@ export default function ViewSwitcher({ data }) {
                             borderColor: 'var(--yellow)',
                             width: '80%',
                         },
-                        '& .Mui-selected': {
+                        '& .MuiToggleButton-root.Mui-selected': {
                             color: 'var(--yellow)',
+                            borderColor: 'var(--yellow)',
+                            backgroundColor: 'transparent', // volitelné, pokud nechceš výchozí MUI modré pozadí
                         },
                     }}
                 >
@@ -79,10 +84,12 @@ export default function ViewSwitcher({ data }) {
                 </ToggleButtonGroup>
             </Box>
 
+            {/* Pokud je vybraný graf, předáme mu NEFILTROVANÁ data */}
             {view === 'chart' ? (
-                <TasksBarChart data={filteredData} />
+                <TasksBarChart data={data} />
             ) : (
                 <Box>
+                    {/* Filtry */}
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <FilterControls
                             searchName={searchName}
@@ -102,6 +109,7 @@ export default function ViewSwitcher({ data }) {
                             setDateTo={setDateTo}
                         />
                     </LocalizationProvider>
+                    {/* Tabulka s filtrovanými daty */}
                     <Box sx={{ mt: 2 }}>
                         <TasksTable data={filteredData} />
                     </Box>
