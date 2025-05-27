@@ -1,3 +1,4 @@
+// src/components/RemoveTask.jsx
 import React, { useState } from 'react';
 import TasksComboBox from './TasksComboBox.jsx';
 import RemoveButton from './RemoveButton.jsx';
@@ -7,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
 
 export default function RemoveTask({ data, setData }) {
     const [selectedItem, setSelectedItem] = useState(null);
@@ -28,14 +30,11 @@ export default function RemoveTask({ data, setData }) {
     // Potvrdí smazání
     const handleConfirmRemove = () => {
         setData(prev => {
-            // nejprve ověříme, že položka existuje
             const exists = prev.some(item => item.id === selectedItem.id);
             if (!exists) {
-                // pokud neexistuje, upozorníme a nebudeme nic mazat
                 window.alert(`Položka s ID ${selectedItem.id} nebyla nalezena.`);
                 return prev;
             }
-            // pokud je vybrán projekt, smažeme projekt i jeho podúkoly
             if (selectedItem.type === 'project') {
                 return prev.filter(item => {
                     if (item.type === 'subtask' && item.project_id === selectedItem.id) {
@@ -44,11 +43,9 @@ export default function RemoveTask({ data, setData }) {
                     return item.id !== selectedItem.id;
                 });
             }
-            // Jinak smaž jen vybranou položku
             return prev.filter(item => item.id !== selectedItem.id);
         });
 
-        // reset stavů
         setSelectedItem(null);
         setInputValue('');
         setConfirmOpen(false);
@@ -56,16 +53,30 @@ export default function RemoveTask({ data, setData }) {
 
     return (
         <>
-            <div className="bubble" style={{ height: '120px', display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <TasksComboBox
-                    data={data}
-                    value={selectedItem}
-                    inputValue={inputValue}
-                    onSelect={setSelectedItem}
-                    onInputChange={setInputValue}
-                />
-                <RemoveButton selectedItem={selectedItem} onRemove={handleOpenConfirm} />
-            </div>
+            <Box
+                className="bubble"
+                sx={{
+                    height: '150px',
+                    mt: '6vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    marginRight: '4vw',
+                }}
+            >
+                <Box sx={{ width: '80%', mt: 1 }}>
+                    <TasksComboBox
+                        data={data}
+                        value={selectedItem}
+                        inputValue={inputValue}
+                        onSelect={setSelectedItem}
+                        onInputChange={setInputValue}
+                    />
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                    <RemoveButton selectedItem={selectedItem} onRemove={handleOpenConfirm} />
+                </Box>
+            </Box>
 
             <Dialog
                 open={confirmOpen}

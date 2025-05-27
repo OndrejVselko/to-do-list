@@ -75,14 +75,25 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
             } else {
                 console.log('submit payload:', payload);
             }
-            if (mode === 'create') {
-                setMessage('Položka byla úspěšně přidána.');
-            } else if (mode === 'edit') {
-                setMessage('Změny byly úspěšně uloženy.');
-            }
+            setMessage(mode === 'create'
+                ? 'Položka byla úspěšně přidána.'
+                : 'Změny byly úspěšně uloženy.'
+            );
         } catch (error) {
             console.error(error);
             setMessage('Nastala chyba při ukládání.');
+        }
+    };
+
+    // společné props pro všechny TextField labely
+    const labelFocusProps = {
+        InputLabelProps: {
+            sx: {
+                color: 'var(--text_label)',
+                '&.Mui-focused': {
+                    color: 'var(--yellow)'
+                }
+            }
         }
     };
 
@@ -90,7 +101,7 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
         <Box className="bubble" id="task_form"
              component="form"
              onSubmit={handleSubmit}
-             sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2 }}
+             sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2, mt: '6vh' }} // přidané mt:2 pro odsazení shora
         >
             <FormControl component="fieldset">
                 <FormLabel component="legend" className="mui_input" sx={{ color: 'var(--text_color)' }}>
@@ -122,9 +133,7 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
 
             {values.type === 'subtask' && (
                 <Box>
-                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                        Projekt
-                    </Typography>
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>Projekt</Typography>
                     <ProjectAutocomplete
                         data={data}
                         onSelect={handleProjectSelect}
@@ -139,7 +148,7 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 onChange={handleChange}
                 required
                 fullWidth
-                InputLabelProps={{ sx: { color: 'var(--text_label)' } }}
+                {...labelFocusProps}
                 InputProps={{
                     sx: {
                         '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
@@ -164,7 +173,13 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                             {...params}
                             required
                             fullWidth
-                            InputLabelProps={{ shrink: true, sx: { color: 'var(--text_label)' } }}
+                            InputLabelProps={{
+                                shrink: true,
+                                sx: {
+                                    color: 'var(--text_label)',
+                                    '&.Mui-focused': { color: 'var(--yellow)' }
+                                }
+                            }}
                             InputProps={{
                                 ...params.InputProps,
                                 sx: {
@@ -186,7 +201,13 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 onChange={handleChange}
                 disabled={values.type === 'subtask'}
                 fullWidth
-                InputLabelProps={{ sx: { color: 'var(--text_label)', '&.Mui-disabled': { color: 'var(--text_label)' } } }}
+                InputLabelProps={{
+                    sx: {
+                        color: 'var(--text_label)',
+                        '&.Mui-focused': { color: 'var(--yellow)' },
+                        '&.Mui-disabled': { color: 'var(--text_label)' }
+                    }
+                }}
                 InputProps={{
                     sx: {
                         '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
@@ -212,19 +233,30 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 multiline
                 rows={4}
                 fullWidth
-                InputLabelProps={{ sx: { color: 'var(--text_label)' } }}
-                InputProps={{ sx: {
+                InputLabelProps={{
+                    sx: {
+                        color: 'var(--text_label)',
+                        '&.Mui-focused': { color: 'var(--yellow)' }
+                    }
+                }}
+                InputProps={{
+                    sx: {
                         '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
                         '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
-                    } }}
+                    }
+                }}
                 sx={{ textarea: { color: 'var(--text_color)' } }}
             />
 
             <Button
                 type="submit"
                 variant="outlined"
-                sx={{ borderColor: 'var(--yellow)', color: 'var(--yellow)', '&:hover': { borderColor: 'var(--yellow)' } }}
+                sx={{
+                    borderColor: 'var(--yellow)',
+                    color: 'var(--yellow)',
+                    '&:hover': { borderColor: 'var(--yellow)' }
+                }}
             >
                 <img src="src/icons/save.png" alt="save changes" style={{ height: 25, width: 'auto' }} />
             </Button>

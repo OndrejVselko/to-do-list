@@ -1,5 +1,6 @@
+// src/components/Switching.jsx
 import React, { useState } from 'react';
-import { ToggleButtonGroup, ToggleButton, Button, Box } from '@mui/material';
+import { ToggleButtonGroup, ToggleButton, Box } from '@mui/material';
 import TasksComboBox from './TasksComboBox.jsx';
 
 /**
@@ -19,9 +20,7 @@ export default function Switching({ data, onSelectItem, onModeChange }) {
         if (newMode) {
             setMode(newMode);
             setSelectedItem(null);
-            // Notify parent about cleared selection
             if (onSelectItem) onSelectItem(null);
-            // Notify parent about mode change
             if (onModeChange) onModeChange(newMode);
         }
     };
@@ -32,20 +31,31 @@ export default function Switching({ data, onSelectItem, onModeChange }) {
     };
 
     return (
-        <div className="bubble" style={{ height: '120px', display: 'block', gap: '10px', alignItems: 'center' }}>
+        <Box
+            className="bubble"
+            sx={{
+                height: '150px',
+                mt: '6vh',           // drobné odsazení shora
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',  // horizontální vycentrování
+                marginLeft: '4vw',
+            }}
+        >
             <ToggleButtonGroup
                 value={mode}
                 exclusive
                 onChange={handleModeChange}
                 aria-label="mode"
                 sx={{
+                    mt: 1,
                     '& .MuiToggleButton-root': {
                         color: 'var(--text_color)',
                         borderColor: 'var(--yellow)',
-                        width: '80%',
                     },
-                    '& .Mui-selected': {
+                    '& .MuiToggleButton-root.Mui-selected': {
                         color: 'var(--yellow)',
+                        backgroundColor: 'transparent',
                     },
                 }}
             >
@@ -58,11 +68,13 @@ export default function Switching({ data, onSelectItem, onModeChange }) {
             </ToggleButtonGroup>
 
             {mode === 'edit' && (
-                <TasksComboBox
-                    data={data}
-                    onSelect={handleSelect}
-                />
+                <Box sx={{ width: '80%', mt: 2 }}>
+                    <TasksComboBox
+                        data={data}
+                        onSelect={handleSelect}
+                    />
+                </Box>
             )}
-        </div>
+        </Box>
     );
 }

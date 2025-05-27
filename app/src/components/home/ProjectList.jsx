@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { ListItem } from '@mui/material';
+import { ListItem, Typography } from '@mui/material';
 import { useSelection } from '../global/SelectionContext.jsx';
 
 export default function ProjectList({ data }) {
@@ -15,18 +15,16 @@ export default function ProjectList({ data }) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Nejprve vyber jen projekty, jejichž date >= dnes
+    // Vyberem projekty s date >= dnes
     const projects = data
         .filter(item => item.type === 'project' && item.state === 0)
         .filter(item => new Date(item.date) >= today);
 
-    // Seskup do objektu { projId: { name, items: [...] } }
+    // Seskupíme projekty a jejich subtasky
     const grouped = {};
     projects.forEach(proj => {
         grouped[proj.id] = { name: proj.name, items: [] };
     });
-
-    // Původní subtasky necháme beze změny
     data
         .filter(item => item.type === 'subtask')
         .forEach(sub => {
@@ -45,52 +43,72 @@ export default function ProjectList({ data }) {
         return d.toLocaleDateString('cs-CZ');
     };
 
+    // společné sx pro klikací položky
+    const clickableItemSx = {
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: 'var(--background_secondary)'
+        }
+    };
+
+    const entries = Object.entries(grouped);
+
     return (
         <div id="project_list" className="bubble">
             <div className="list">
                 <h3>Projekty:</h3>
-                <List>
-                    {Object.entries(grouped).map(([projId, { name, items }], idx) => (
-                        <div key={projId}>
-                            <ListItem button onClick={() => handleClick(idx)}>
-                                <ListItemText primary={name} />
-                                {openIndexes.includes(idx) ? <ExpandLess /> : <ExpandMore />}
-                            </ListItem>
-                            <Collapse in={openIndexes.includes(idx)} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                    {items.map(sub => (
-                                        <ListItem
-                                            key={sub.id}
-                                            sx={{ pl: 4 }}
-                                            onClick={() => setSelectedItem(sub)}
-                                        >
-                                            <ListItemText
-                                                primary={
-                                                    <>
-                                                        {sub.state === 1 ? (
-                                                            <img
-                                                                src="src/icons/done.png"
-                                                                alt="done_icon"
-                                                                style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }}
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src="src/icons/undone.png"
-                                                                alt="undone_icon"
-                                                                style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }}
-                                                            />
-                                                        )}
-                                                        {`${sub.name} – ${formatDate(sub.date)}`}
-                                                    </>
-                                                }
-                                            />
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Collapse>
-                        </div>
-                    ))}
-                </List>
+                {entries.length === 0 ? (
+                    <Typography sx={{ textAlign: 'center', mt: 2, color: 'var(--text_color)' }}>
+                        Aktuálně nemáte žádné projekty
+                    </Typography>
+                ) : (
+                    <List>
+                        {entries.map(([projId, { name, items }], idx) => (
+                            <div key={projId}>
+                                <ListItem
+                                    button
+                                    onClick={() => handleClick(idx)}
+                                    sx={clickableItemSx}
+                                >
+                                    <ListItemText primary={name} />
+                                    {openIndexes.includes(idx) ? <ExpandLess /> : <ExpandMore />}
+                                </ListItem>
+                                <Collapse in={openIndexes.includes(idx)} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        {items.map(sub => (
+                                            <ListItem
+                                                key={sub.id}
+                                                onClick={() => setSelectedItem(sub)}
+                                                sx={{ pl: 4, ...clickableItemSx }}
+                                            >
+                                                <ListItemText
+                                                    primary={
+                                                        <>
+                                                            {sub.state === 1 ? (
+                                                                <img
+                                                                    src="src/icons/done.png"
+                                                                    alt="done_icon"
+                                                                    style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }}
+                                                                />
+                                                            ) : (
+                                                                <img
+                                                                    src="src/icons/undone.png"
+                                                                    alt="undone_icon"
+                                                                    style={{ width: 16, marginRight: 8, verticalAlign: 'middle' }}
+                                                                />
+                                                            )}
+                                                            {`${sub.name} – ${formatDate(sub.date)}`}
+                                                        </>
+                                                    }
+                                                />
+                                            </ListItem>
+                                        ))}
+                                    </List>
+                                </Collapse>
+                            </div>
+                        ))}
+                    </List>
+                )}
             </div>
         </div>
     );

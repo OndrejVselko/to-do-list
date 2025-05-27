@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 export default function RemoveButton({ selectedItem, onRemove }) {
     return (
         <Button
+            sx={{height: '50px', width: '7vw'}}
             id="remove_button"
             variant="outlined"
             onClick={onRemove}

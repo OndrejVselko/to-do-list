@@ -7,10 +7,10 @@
 }
 
 [theme='light']{
-  --background_primary: #FFFFFF;
-  --background_secondary: #FFFDEE;
-  --text_color: #323437;
-  --text_label: #5e5e5e;
+  --background_primary: #FFFFD4;
+  --background_secondary: #ffffc0;
+  --text_color: #515151;
+  --text_label: #707070;
 
 }
 

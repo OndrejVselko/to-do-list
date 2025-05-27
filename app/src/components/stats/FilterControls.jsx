@@ -30,31 +30,39 @@ export default function FilterControls({
                                            dateTo,
                                            setDateTo
                                        }) {
-    // common sx pro všechny outlined inputs
-    const commonSX = {
-        // okraj — normal / hover / focus / active
-        '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'var(--yellow)',
+    const commonInputLabelProps = {
+        InputLabelProps: {
+            sx: {
+                color: 'var(--text_label)',
+                '&.Mui-focused': {
+                    color: 'var(--yellow)'
+                }
+            }
+        }
+    };
+
+    const commonInputProps = {
+        InputProps: {
+            sx: {
+                '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+            }
         },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'var(--yellow)',
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'var(--yellow)',
-        },
-        '&:active .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'var(--yellow)',
-        },
-        // text uživatele
-        '& .MuiInputBase-input': {
-            color: 'var(--text_color)',
-        },
-        // label — normal / focus
-        '& .MuiInputLabel-root': {
+        sx: { input: { color: 'var(--text_color)' } }
+    };
+
+    const selectSx = {
+        color: 'var(--text_color)',
+        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+    };
+
+    const labelFocusedSx = {
+        sx: {
             color: 'var(--text_label)',
-        },
-        '& .MuiInputLabel-root.Mui-focused': {
-            color: 'var(--text_label)',
+            '&.Mui-focused': { color: 'var(--yellow)' }
         }
     };
 
@@ -68,22 +76,20 @@ export default function FilterControls({
                     variant="outlined"
                     value={searchName}
                     onChange={e => setSearchName(e.target.value)}
-                    sx={commonSX}
+                    required
+                    {...commonInputLabelProps}
+                    {...commonInputProps}
                 />
 
                 {/* Type Select */}
-                <FormControl variant="outlined" sx={{ minWidth: 120, ...commonSX }}>
-                    <InputLabel id="type-label">Typ</InputLabel>
+                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                    <InputLabel id="type-label" {...labelFocusedSx}>Typ</InputLabel>
                     <Select
                         labelId="type-label"
                         value={filterType}
                         label="Typ"
                         onChange={e => setFilterType(e.target.value)}
-                        sx={{
-                            '& .MuiSelect-select': {
-                                color: 'var(--text_color)',
-                            }
-                        }}
+                        sx={selectSx}
                     >
                         <MenuItem value="all">Vše</MenuItem>
                         <MenuItem value="task">Task</MenuItem>
@@ -94,7 +100,17 @@ export default function FilterControls({
 
                 {/* Autocomplete */}
                 <Autocomplete
-                    sx={{ minWidth: 240, ...commonSX }}
+                    sx={{
+                        minWidth: 240,
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+                        '& .MuiInputBase-input': { color: 'var(--text_color)' },
+                        '& .MuiInputLabel-root': {
+                            color: 'var(--text_label)',
+                            '&.Mui-focused': { color: 'var(--yellow)' }
+                        }
+                    }}
                     options={projectOptions}
                     getOptionLabel={option => option.name}
                     value={filterProject}
@@ -104,25 +120,20 @@ export default function FilterControls({
                             {...params}
                             label="Projekt (subtask)"
                             variant="outlined"
-                            sx={commonSX}
                         />
                     )}
                     clearOnEscape
                 />
 
                 {/* State Select */}
-                <FormControl variant="outlined" sx={{ minWidth: 120, ...commonSX }}>
-                    <InputLabel id="state-label">Stav</InputLabel>
+                <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+                    <InputLabel id="state-label" {...labelFocusedSx}>Stav</InputLabel>
                     <Select
                         labelId="state-label"
                         value={filterState}
                         label="Stav"
                         onChange={e => setFilterState(e.target.value)}
-                        sx={{
-                            '& .MuiSelect-select': {
-                                color: 'var(--text_color)',
-                            }
-                        }}
+                        sx={selectSx}
                     >
                         <MenuItem value="all">Vše</MenuItem>
                         <MenuItem value="0">Neprovedené</MenuItem>
@@ -138,9 +149,7 @@ export default function FilterControls({
                             onChange={e => setOnlyPriority(e.target.checked)}
                             sx={{
                                 color: 'var(--yellow)',
-                                '&.Mui-checked': {
-                                    color: 'var(--yellow)',
-                                }
+                                '&.Mui-checked': { color: 'var(--yellow)' }
                             }}
                         />
                     }
@@ -153,7 +162,12 @@ export default function FilterControls({
                     value={dateFrom}
                     onChange={newValue => setDateFrom(newValue)}
                     renderInput={params => (
-                        <TextField {...params} variant="outlined" sx={commonSX} />
+                        <TextField
+                            {...params}
+                            variant="outlined"
+                            {...commonInputLabelProps}
+                            {...commonInputProps}
+                        />
                     )}
                 />
                 <DatePicker
@@ -161,7 +175,12 @@ export default function FilterControls({
                     value={dateTo}
                     onChange={newValue => setDateTo(newValue)}
                     renderInput={params => (
-                        <TextField {...params} variant="outlined" sx={commonSX} />
+                        <TextField
+                            {...params}
+                            variant="outlined"
+                            {...commonInputLabelProps}
+                            {...commonInputProps}
+                        />
                     )}
                 />
 

@@ -63,6 +63,14 @@ body{
   right: 0px;
 }
 
+#home_body {
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  padding: 0 6.25vw; /* 6.25vw po stranách, mezi každou bublinou je pak také 6.25vw */
+  box-sizing: border-box;
+}
+
 .corner_button a img{
   margin-top: 5px;
   margin-left: 5px;
@@ -76,10 +84,9 @@ body{
   background-color: var(--background_primary);
   border: 3px solid var(--yellow);
   border-radius: 15px;
-  width: 25%;
+  width: 25vw;
   height: 76vh;
   margin-top: 6vh;
-  margin-left: 5vw;
   overflow: auto;
 }
 
