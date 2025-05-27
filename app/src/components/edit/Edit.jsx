@@ -11,7 +11,7 @@ export default function Edit({ data, setData }) {
     const [selectedProject, setSelectedProject] = useState(null);
     const [showData, setShowData] = useState(false);
 
-    const handleForm = (formData) => {
+        const handleForm = (formData) => {
         if (mode === 'create') {
             const maxId = data.reduce((max, item) => (item.id > max ? item.id : max), 0);
             let projectId = null;
@@ -23,11 +23,19 @@ export default function Edit({ data, setData }) {
                 { id: maxId + 1, ...formData, state: 0, project_id: projectId }
             ]);
         } else {
-            setData(prev => prev.filter(item => item.id !== selectedItem.id));
-            setData(prevData => [
-                ...prevData,
-                { id: selectedItem.id, ...formData }
-            ]);
+            setData(prevData =>
+                prevData.map(item =>
+                    item.id === selectedItem.id
+                        ? {
+                            ...item,
+                            ...formData,
+                            // zachovej původní project_id a state pokud nejsou ve formData
+                            project_id: formData.project_id !== undefined ? formData.project_id : item.project_id,
+                            state: formData.state !== undefined ? formData.state : item.state
+                        }
+                        : item
+                )
+            );
         }
     };
 
