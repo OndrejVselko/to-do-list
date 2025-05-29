@@ -63,6 +63,14 @@ body{
   right: 0px;
 }
 
+#info_button{
+  border-right: 3px solid var(--yellow);
+  border-top: 3px solid var(--yellow);
+  border-radius: 0 15px 0 0;
+  bottom: 0px;
+  left: 0px;
+}
+
 #home_body {
   display: flex;
   justify-content: space-between;

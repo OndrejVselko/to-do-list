@@ -9,6 +9,7 @@ import Edit from "./components/edit/Edit.jsx";
 import Stats from "./components/stats/Stats.jsx";
 import { useEffect, useState } from "react";
 import '@fontsource/roboto/400.css';
+import InfoButton from "./components/global/InfoButton.jsx";
 
 function App() {
     // Lifting state up: data + setter
@@ -35,6 +36,7 @@ function App() {
             <Navbar />
             <ThemeButton />
             <AccountButton />
+            <InfoButton/>
             <NewTaskButton data={data} setData={setData}/>
             <div className="container">
                 <Routes>

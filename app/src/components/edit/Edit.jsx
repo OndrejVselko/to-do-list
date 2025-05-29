@@ -74,7 +74,7 @@ export default function Edit({ data, setData }) {
                     setData={setData}
                 />
 
-                <Box sx={{ position: 'absolute', top: 'calc(100vh - 100px)', left: '16' }}>
+                <Box sx={{ position: 'absolute', top: 'calc(100vh - 100px)', left: '75px' }}>
                     <Button
                         variant="outlined"
                         onClick={() => setShowData(prev => !prev)}
