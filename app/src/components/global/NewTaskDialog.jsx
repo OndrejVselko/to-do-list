@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import csLocale from 'date-fns/locale/cs';
 
 export default function NewTaskDialog({ open, onClose, onCreate }) {
     const [name, setName] = useState('');
@@ -37,7 +38,6 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
         onClose();
     };
 
-    // Common sx for outline fields, including date input background
     const outlineStyles = {
         '& .MuiOutlinedInput-root': {
             backgroundColor: 'var(--background_primary)',
@@ -96,13 +96,15 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
                     variant="outlined"
                     sx={outlineStyles}
                 />
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={csLocale}>
                     <DatePicker
                         required
                         label="Datum"
                         value={date}
                         onChange={setDate}
                         disablePast
+                        inputFormat="dd.MM.yyyy"
+                        mask="__.__.____"
                         slotProps={{
                             textField: { sx: outlineStyles },
                             popper: {
@@ -132,7 +134,7 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
                     />
                 </LocalizationProvider>
                 <FormControlLabel
-                    sx={{ '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
+                    sx={{ marginLeft:'10px', marginTop:'7px', '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
                     control={
                         <Checkbox
                             checked={priority}

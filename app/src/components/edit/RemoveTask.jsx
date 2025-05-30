@@ -15,19 +15,16 @@ export default function RemoveTask({ data, setData }) {
     const [inputValue, setInputValue] = useState('');
     const [confirmOpen, setConfirmOpen] = useState(false);
 
-    // Otevře potvrzovací dialog
     const handleOpenConfirm = () => {
         if (selectedItem) {
             setConfirmOpen(true);
         }
     };
 
-    // Zavře dialog bez akce
     const handleCloseConfirm = () => {
         setConfirmOpen(false);
     };
 
-    // Potvrdí smazání
     const handleConfirmRemove = () => {
         setData(prev => {
             const exists = prev.some(item => item.id === selectedItem.id);

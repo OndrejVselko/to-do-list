@@ -14,22 +14,22 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function FilterControls({
-                                           searchName,
-                                           setSearchName,
-                                           filterType,
-                                           setFilterType,
-                                           filterState,
-                                           setFilterState,
-                                           onlyPriority,
-                                           setOnlyPriority,
-                                           filterProject,
-                                           setFilterProject,
-                                           projectOptions,
-                                           dateFrom,
-                                           setDateFrom,
-                                           dateTo,
-                                           setDateTo
-                                       }) {
+    searchName,
+    setSearchName,
+    filterType,
+    setFilterType,
+    filterState,
+    setFilterState,
+    onlyPriority,
+    setOnlyPriority,
+    filterProject,
+    setFilterProject,
+    projectOptions,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo
+}) {
     const commonInputLabelProps = {
         InputLabelProps: {
             sx: {
@@ -70,7 +70,6 @@ export default function FilterControls({
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" mb={2}>
 
-                {/* TextField */}
                 <TextField
                     label="Hledat podle názvu"
                     variant="outlined"
@@ -81,7 +80,6 @@ export default function FilterControls({
                     {...commonInputProps}
                 />
 
-                {/* Type Select */}
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
                     <InputLabel id="type-label" {...labelFocusedSx}>Typ</InputLabel>
                     <Select
@@ -98,7 +96,6 @@ export default function FilterControls({
                     </Select>
                 </FormControl>
 
-                {/* Autocomplete */}
                 <Autocomplete
                     sx={{
                         minWidth: 240,
@@ -125,7 +122,6 @@ export default function FilterControls({
                     clearOnEscape
                 />
 
-                {/* State Select */}
                 <FormControl variant="outlined" sx={{ minWidth: 120 }}>
                     <InputLabel id="state-label" {...labelFocusedSx}>Stav</InputLabel>
                     <Select
@@ -141,7 +137,6 @@ export default function FilterControls({
                     </Select>
                 </FormControl>
 
-                {/* Checkbox */}
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -156,7 +151,6 @@ export default function FilterControls({
                     label="Pouze priorita"
                 />
 
-                {/* Date Pickers */}
                 <DatePicker
                     label="Od"
                     value={dateFrom}

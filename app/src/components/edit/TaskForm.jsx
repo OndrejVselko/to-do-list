@@ -14,13 +14,20 @@ import {
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import ProjectAutocomplete from "./ProjectAutocomplete.jsx";
+import csLocale from 'date-fns/locale/cs';
+import ProjectAutocomplete from './ProjectAutocomplete.jsx';
 
-export default function TaskProjectForm({ selectedItem = null, onSubmit, data, setSelectedProject, mode }) {
+export default function TaskProjectForm({
+    selectedItem = null,
+    onSubmit,
+    data,
+    setSelectedProject,
+    mode
+}) {
     const emptyValues = {
         type: 'task',
         name: '',
-        date: '',
+        date: null,
         category: '',
         project_id: null,
         priority: false,
@@ -30,13 +37,13 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
     const [values, setValues] = useState(emptyValues);
     const [message, setMessage] = useState('');
 
+
     useEffect(() => {
         if (selectedItem) {
-            const dateVal = selectedItem.date ? selectedItem.date.split('T')[0] : '';
             setValues({
                 type: selectedItem.type || 'task',
                 name: selectedItem.name || '',
-                date: dateVal,
+                date: selectedItem.date ? new Date(selectedItem.date) : null,
                 category: selectedItem.category ?? '',
                 project_id: selectedItem.project_id ?? null,
                 priority: Boolean(selectedItem.priority),
@@ -50,22 +57,28 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
 
     const handleChange = (e) => {
         const { name, type, value, checked } = e.target;
-        setValues(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-    };
-
-    const handleProjectSelect = (selectedProjectObj) => {
         setValues(prev => ({
             ...prev,
-            category: selectedProjectObj?.name || '',
-            project_id: selectedProjectObj?.id || null
+            [name]: type === 'checkbox' ? checked : value
         }));
-        setSelectedProject(selectedProjectObj);
+    };
+
+    const handleProjectSelect = (project) => {
+        setValues(prev => ({
+            ...prev,
+            category: project?.name || '',
+            project_id: project?.id || null
+        }));
+        setSelectedProject(project);
     };
 
     const filteredProjects = useMemo(() => {
         const today = new Date();
         today.setHours(0,0,0,0);
-        return data.filter(item => item.type === 'project' && new Date(item.date) >= today);
+        return data.filter(item =>
+            item.type === 'project' &&
+            new Date(item.date) >= today
+        );
     }, [data]);
 
     const handleSubmit = async (e) => {
@@ -78,10 +91,24 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
             setMessage('Prosím vyberte projekt.');
             return;
         }
-        const payload = { ...values, date: values.date ? new Date(values.date).toISOString() : null };
+
+        const payload = {
+            ...values,
+            date: values.date.toISOString()
+        };
+
         try {
             if (onSubmit) await onSubmit(payload);
-            setMessage(mode === 'create' ? 'Položka byla úspěšně přidána.' : 'Změny byly úspěšně uloženy.');
+
+            if (mode === 'create') {
+                setValues(emptyValues);
+                setSelectedProject(null);
+            }
+            setMessage(
+                mode === 'create'
+                    ? 'Položka byla úspěšně přidána.'
+                    : 'Změny byly úspěšně uloženy.'
+            );
         } catch {
             setMessage('Nastala chyba při ukládání.');
         }
@@ -95,23 +122,46 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
 
     const labelStyles = {
         InputLabelProps: {
-            sx: { color: 'var(--text_label)', '&.Mui-focused': { color: 'var(--yellow)' } }
+            sx: {
+                color: 'var(--text_label)',
+                '&.Mui-focused': { color: 'var(--yellow)' }
+            }
         }
     };
 
     return (
-        <Box className="bubble" id="task_form" component="form" onSubmit={handleSubmit}
-             sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2, mt: '6vh' }}>
-
+        <Box
+            className="bubble"
+            id="task_form"
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2, mt: '6vh' }}
+        >
             <FormControl component="fieldset">
-                <FormLabel className="mui_input" sx={{ color: 'var(--text_color)', '&.Mui-focused': { color: 'var(--text_color)' }, '&.Mui-focused\:not(&)' : {} }}>Typ položky</FormLabel>
-                <RadioGroup row name="type" value={values.type} onChange={handleChange}>
-                    {['task','project','subtask'].map(val => (
+                <FormLabel sx={{
+                    color: 'var(--text_color)',
+                    '&.Mui-focused': { color: 'var(--text_color)' }
+                }}>
+                    <p style={{fontSize:'22px'}}>Typ položky</p>
+                </FormLabel>
+                <RadioGroup
+                    row
+                    name="type"
+                    value={values.type}
+                    onChange={handleChange}
+                >
+                    {['task', 'project', 'subtask'].map(val => (
                         <FormControlLabel
                             key={val}
                             value={val}
                             control={<Radio sx={{ '&.Mui-checked': { color: 'var(--yellow)' } }} />}
-                            label={val === 'subtask' ? 'Podúkol' : val.charAt(0).toUpperCase()+val.slice(1)}
+                            label={
+                                val === 'task'
+                                    ? 'Úkol'
+                                    : val === 'project'
+                                        ? 'Projekt'
+                                        : 'Podúkol'
+                            }
                             sx={{ '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
                         />
                     ))}
@@ -120,8 +170,14 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
 
             {values.type === 'subtask' && (
                 <Box>
-                    <Typography variant="subtitle1" sx={{ mb: 1,  }}>Projekt *</Typography>
-                    <ProjectAutocomplete data={filteredProjects} onSelect={handleProjectSelect} required />
+                    <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                        Projekt *
+                    </Typography>
+                    <ProjectAutocomplete
+                        data={filteredProjects}
+                        onSelect={handleProjectSelect}
+                        required
+                    />
                 </Box>
             )}
 
@@ -137,23 +193,63 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 sx={{ input: { color: 'var(--text_color)' } }}
             />
 
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={csLocale}
+            >
                 <DatePicker
                     label="Datum"
                     disablePast
-                    value={values.date ? new Date(values.date) : null}
-                    onChange={(newValue) => setValues(prev => ({
-                        ...prev,
-                        date: newValue ? newValue.toISOString().split('T')[0] : ''
-                    }))}
+                    value={values.date}
+                    onChange={(newDate) =>
+                        setValues(prev => ({ ...prev, date: newDate }))
+                    }
+                    inputFormat="dd.MM.yyyy"
+                    mask="__.__.____"
+                    slotProps={{
+                        textField: {
+                            sx: {
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': { borderColor: 'var(--yellow)' },
+                                    '&:hover fieldset': { borderColor: 'var(--yellow)' },
+                                    '&.Mui-focused fieldset': { borderColor: 'var(--yellow)' }
+                                },
+                                '& .MuiInputBase-input': { color: 'var(--text_color)' },
+                                '& .MuiInputLabel-root': { color: 'var(--yellow)' },
+                                '& .MuiInputLabel-root.Mui-focused': { color: 'var(--yellow)' }
+                            }
+                        },
+                        popper: {
+                            sx: {
+                                '& .MuiPaper-root': {
+                                    backgroundColor: 'var(--background_primary)',
+                                    border: '1px solid var(--yellow)',
+                                    color: 'var(--text_color)'
+                                }
+                            }
+                        },
+                        day: {
+                            sx: {
+                                '&.Mui-selected, &.Mui-selected:hover': {
+                                    backgroundColor: 'var(--yellow)',
+                                    color: 'var(--background_primary)'
+                                },
+                                color: 'var(--text_color)'
+                            }
+                        },
+                        actionBar: {
+                            sx: {
+                                '& .MuiButton-textPrimary': {
+                                    color: 'var(--yellow)'
+                                }
+                            }
+                        }
+                    }}
                     renderInput={(params) => (
                         <TextField
                             {...params}
                             required
                             fullWidth
-                            InputProps={{ ...params.InputProps, sx: inputStyles }}
-                            InputLabelProps={{ shrink: true, sx: { color: 'var(--text_label)', '&.Mui-focused': { color: 'var(--yellow)' } } }}
-                            sx={{ input: { color: 'var(--text_color)' } }}
                         />
                     )}
                 />
@@ -163,25 +259,46 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 label="Kategorie"
                 name="category"
                 value={values.category}
+                onChange={handleChange}
                 disabled={values.type === 'subtask'}
                 fullWidth
-                InputProps={{ sx: inputStyles, '&.Mui-disabled .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--text_label)' } }}
-                InputLabelProps={{ sx: { color: 'var(--text_label)', '&.Mui-focused': { color: 'var(--yellow)' }, '&.Mui-disabled': { color: 'var(--text_label)' } } }}
+                InputProps={{
+                    sx: inputStyles,
+                    '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--text_label)'
+                    }
+                }}
+                InputLabelProps={{
+                    sx: {
+                        color: 'var(--text_label)',
+                        '&.Mui-focused': { color: 'var(--yellow)' },
+                        '&.Mui-disabled': { color: 'var(--text_label)' }
+                    }
+                }}
                 sx={{ input: { color: 'var(--text_color)' } }}
             />
 
             <FormControlLabel
-                control={<Checkbox name="priority" checked={values.priority} onChange={handleChange} sx={{ '&.Mui-checked': { color: 'var(--yellow)' } }} />}
+                control={
+                    <Checkbox
+                        name="priority"
+                        checked={values.priority}
+                        onChange={handleChange}
+                        sx={{ '&.Mui-checked': { color: 'var(--yellow)' } }}
+                    />
+                }
                 label="Priorita"
                 sx={{ '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
             />
 
             <TextField
-                label="Komentář"
+                label="Poznámka"
                 name="comment"
                 value={values.comment}
                 onChange={handleChange}
-                multiline rows={4} fullWidth
+                multiline
+                rows={4}
+                fullWidth
                 InputProps={{ sx: inputStyles }}
                 {...labelStyles}
                 sx={{ textarea: { color: 'var(--text_color)' } }}
@@ -193,10 +310,18 @@ export default function TaskProjectForm({ selectedItem = null, onSubmit, data, s
                 disabled={!values.date}
                 sx={{ borderColor: 'var(--yellow)', color: 'var(--yellow)' }}
             >
-                <img src="src/icons/save.png" alt="save changes" style={{ height: 25, width: 'auto' }} />
+                <img
+                    src="src/icons/save.png"
+                    alt="save changes"
+                    style={{ height: 25, width: 'auto' }}
+                />
             </Button>
 
-            {message && <Typography variant="body2" sx={{ color: 'var(--text_color)', mt: 1 }}>{message}</Typography>}
+            {message && (
+                <Typography variant="body2" sx={{ color: 'var(--text_color)', mt: 1 }}>
+                    {message}
+                </Typography>
+            )}
         </Box>
     );
 }

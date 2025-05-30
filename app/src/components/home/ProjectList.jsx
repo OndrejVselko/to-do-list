@@ -20,7 +20,6 @@ export default function ProjectList({ data }) {
         .filter(item => item.type === 'project' && item.state === 0)
         .filter(item => new Date(item.date) >= today);
 
-    // Seskupíme projekty a jejich subtasky
     const grouped = {};
     projects.forEach(proj => {
         grouped[proj.id] = { name: proj.name, items: [] };
@@ -43,7 +42,6 @@ export default function ProjectList({ data }) {
         return d.toLocaleDateString('cs-CZ');
     };
 
-    // společné sx pro klikací položky
     const clickableItemSx = {
         cursor: 'pointer',
         '&:hover': {

@@ -2,7 +2,6 @@ import { useSelection } from '../global/SelectionContext.jsx';
 import React from 'react';
 import { Button } from '@mui/material';
 
-// Props: data (array of tasks), setData (state updater)
 export default function TaskDetail({ data, setData }) {
     const { selectedItem, setSelectedItem } = useSelection();
 
@@ -18,12 +17,9 @@ export default function TaskDetail({ data, setData }) {
         if (!selectedItem) return;
 
         setData(prev => {
-            // 1) mark selected item done
             let newData = prev.map(item =>
                 item.id === selectedItem.id ? { ...item, state: 1 } : item
             );
-
-            // 2) if was subtask, check all sibling subtasks
             if (selectedItem.type === 'subtask' && selectedItem.project_id != null) {
                 const projectId = selectedItem.project_id;
                 const subtasks = newData.filter(item =>
@@ -31,7 +27,6 @@ export default function TaskDetail({ data, setData }) {
                 );
                 const allDone = subtasks.length > 0 && subtasks.every(st => st.state === 1);
                 if (allDone) {
-                    // mark project done
                     newData = newData.map(item =>
                         item.id === projectId ? { ...item, state: 1 } : item
                     );
@@ -41,7 +36,6 @@ export default function TaskDetail({ data, setData }) {
             return newData;
         });
 
-        // clear selection in context
         setSelectedItem(null);
     };
 
@@ -59,7 +53,7 @@ export default function TaskDetail({ data, setData }) {
         <div className="bubble">
             <div id="task_detail" className="list">
                 <h2>
-                    {selectedItem.priority && (
+                    {Boolean(selectedItem.priority) && (
                         <img
                             src="src/icons/alert.png"
                             alt="important_icon"

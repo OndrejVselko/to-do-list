@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import InfoDialog from './Info'; // upravte cestu podle struktury projektu
+import InfoDialog from './Info';
 
-/**
- * InfoButton komponenta vykreslí tlačítko, po jehož kliknutí se otevře InfoDialog.
- * Obsah dialogu se mění dle aktuální URL cesty.
- */
+
 export default function InfoButton() {
     const [open, setOpen] = useState(false);
     const location = useLocation();
@@ -19,7 +16,6 @@ export default function InfoButton() {
         setOpen(false);
     };
 
-    // Vyberte obsah na základě aktuální cesty
     const renderContent = () => {
         switch (location.pathname) {
             case '/':

@@ -1,4 +1,3 @@
-// src/components/TaskList.jsx
 import React, { useState } from 'react';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
@@ -12,11 +11,9 @@ export default function TaskList({ data }) {
     const [openIndexes, setOpenIndexes] = useState([]);
     const { setSelectedItem } = useSelection();
 
-    // pomocná: začátek dneška
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Only tasks with state 0 and date >= dnes
     const filtered = data
         .filter(item => item.type === 'task' && item.state === 0)
         .filter(item => new Date(item.date) >= today);
@@ -52,7 +49,6 @@ export default function TaskList({ data }) {
             prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
         );
 
-    // common sx for clickable ListItems
     const clickableItemSx = {
         cursor: 'pointer',
         '&:hover': {

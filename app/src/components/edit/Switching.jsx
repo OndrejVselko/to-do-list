@@ -1,19 +1,9 @@
-// src/components/Switching.jsx
 import React, { useState } from 'react';
 import { ToggleButtonGroup, ToggleButton, Box } from '@mui/material';
 import TasksComboBox from './TasksComboBox.jsx';
 
-/**
- * Switching component allows toggling between 'create' and 'edit' modes.
- * When in 'edit' mode, it selects an item and notifies the parent via onSelectItem callback.
- *
- * Props:
- * - data: array of task items
- * - onSelectItem: function(item) to pass the selected item back to parent
- * - onModeChange: function(mode) to notify parent about mode change
- */
 export default function Switching({ data, onSelectItem, onModeChange }) {
-    const [mode, setMode] = useState('create'); // 'create' | 'edit'
+    const [mode, setMode] = useState('create');
     const [selectedItem, setSelectedItem] = useState(null);
 
     const handleModeChange = (event, newMode) => {
@@ -35,10 +25,10 @@ export default function Switching({ data, onSelectItem, onModeChange }) {
             className="bubble"
             sx={{
                 height: '150px',
-                mt: '6vh',           // drobné odsazení shora
+                mt: '6vh',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',  // horizontální vycentrování
+                alignItems: 'center',
                 marginLeft: '4vw',
             }}
         >

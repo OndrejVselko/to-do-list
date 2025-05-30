@@ -2,7 +2,6 @@ import React from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 
 export default function ProjectAutocomplete({ data, onSelect }) {
-    // Filtrovat projekty
     const projectItems = data.filter(item => item.type === 'project');
 
     return (
@@ -18,16 +17,14 @@ export default function ProjectAutocomplete({ data, onSelect }) {
                     variant="outlined"
                     fullWidth
                     InputLabelProps={{
-                        // zachovám všechny původní props a jen přidám sx
                         ...params.InputLabelProps,
                         sx: { color: 'var(--text_label)' }
                     }}
                     InputProps={{
-                        // zachovám všechny původní props (endAdornment apod.) a jen přidám sx
                         ...params.InputProps,
                         sx: {
                             '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'var(--yellow)',      // žlutý rámeček
+                                borderColor: 'var(--yellow)',
                             },
                             '&:hover .MuiOutlinedInput-notchedOutline': {
                                 borderColor: 'var(--yellow)',
@@ -36,7 +33,7 @@ export default function ProjectAutocomplete({ data, onSelect }) {
                                 borderColor: 'var(--yellow)',
                             },
                             '& input': {
-                                color: 'var(--text_color)',             // bílý text v poli
+                                color: 'var(--text_color)',
                             },
                         }
                     }}

@@ -13,7 +13,7 @@ export default function TasksGrid({ data }) {
 
     const now = new Date();
 
-    // Vytvoříme mapu projektů pro subtask
+
     const projectsMap = data
         .filter((item) => item.type === 'project')
         .reduce((acc, item) => {
@@ -21,7 +21,7 @@ export default function TasksGrid({ data }) {
             return acc;
         }, {});
 
-    // Definujeme sloupce s procentuálními hodnotami (poměr flex)
+
     const columns = [
         { field: 'typeLabel', headerName: 'Typ', flex: 0.2 },       // 20%
         { field: 'name',      headerName: 'Název', flex: 0.5, minWidth: 200 }, // 50%
@@ -38,7 +38,6 @@ export default function TasksGrid({ data }) {
         { field: 'category',   headerName: 'Kategorie', flex: 0.2 }  // 20%
     ];
 
-    // Příprava řádků
     const rows = data
         .filter((r) => ['task', 'project', 'subtask'].includes(r.type))
         .sort((a, b) => new Date(a.date) - new Date(b.date))
@@ -65,7 +64,7 @@ export default function TasksGrid({ data }) {
         <Box
             sx={{
                 height: '60vh',
-                width: '80vw',                  // Nastaveno na 80vw
+                width: '80vw',
                 mx: 'auto',
                 overflow: 'hidden',
                 '& *::-webkit-scrollbar': { width: '8px', height: '8px' },
@@ -98,7 +97,6 @@ export default function TasksGrid({ data }) {
                     '& .state-0-cell': { color: 'var(--text_color)' },
                     '& .state-1-cell': { color: '#7af67a' },
                     '& .state-overdue-cell': { color: '#ff3939' },
-                    // Barva prázdného místa
                     '& .MuiDataGrid-virtualScroller': { backgroundColor: 'var(--background_primary)' },
                 }}
             />

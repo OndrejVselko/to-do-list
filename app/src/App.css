@@ -104,23 +104,23 @@ body{
   overflow: auto;
 }
 
-.list::-webkit-scrollbar {
+.list::-webkit-scrollbar, #task_form::-webkit-scrollbar {
   width: 8px; /* šířka scrollbar tracku */
 }
 
-.list::-webkit-scrollbar-track {
+.list::-webkit-scrollbar-track, #task_form::-webkit-scrollbar-track {
   background: var(--background_primary); /* barva pozadí */
   border-radius: 15px;
 }
 
-.list::-webkit-scrollbar-thumb {
+.list::-webkit-scrollbar-thumb, #task_form::-webkit-scrollbar-thumb {
   background: var(--background_secondary); /* barva thumbu (toho, co se hýbe) */
   border-radius: 15px 0 0 15px;
   border: 1px solid var(--yellow);
   border-right: none;
 }
 
-.list::-webkit-scrollbar-thumb:hover {
+.list::-webkit-scrollbar-thumb:hover, #task_form::-webkit-scrollbar-thumb:hover {
   background: #555; /* barva při hoveru */
 }
 

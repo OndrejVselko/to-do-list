@@ -1,4 +1,3 @@
-// src/components/Edit.jsx
 import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import RemoveTask from './RemoveTask.jsx';
@@ -29,7 +28,6 @@ export default function Edit({ data, setData }) {
                         ? {
                             ...item,
                             ...formData,
-                            // zachovej původní project_id a state pokud nejsou ve formData
                             project_id: formData.project_id !== undefined ? formData.project_id : item.project_id,
                             state: formData.state !== undefined ? formData.state : item.state
                         }
@@ -41,7 +39,6 @@ export default function Edit({ data, setData }) {
 
     return (
         <>
-            {/* Hlavní obsah */}
             <Box
                 sx={{
                     display: 'flex',
@@ -92,7 +89,6 @@ export default function Edit({ data, setData }) {
                 </Box>
             </Box>
 
-            {/* Debug výpis pod stránkou */}
             {showData && (
                 <Box
                     sx={{
@@ -113,9 +109,4 @@ export default function Edit({ data, setData }) {
             )}
         </>
     );
-}
-
-function ShowData({ data }) {
-    // function kept for compatibility, not used
-    return null;
 }
