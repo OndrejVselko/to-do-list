@@ -4,13 +4,18 @@
   --yellow: #E2B714;
   --text_color: #FFFFFF;
   --text_label: #c2c2c2;
+  --text_green: #7af67a;
+  --text_red: #FF0000;
 }
 
 [theme='light']{
   --background_primary: #FFFFD4;
   --background_secondary: #ffffc0;
-  --text_color: #515151;
+  --text_color: #3a3a3a;
   --text_label: #707070;
+  --text_green: #219321;
+  --text_red: #ca0000;
+  --yellow: #E2B714;
 
 }
 
@@ -19,6 +24,9 @@
   --background_secondary: #2C2E31;
   --text_color: #FFFFFF;
   --text_label: #c2c2c2;
+  --text_green: #7af67a;
+  --text_red: #FF0000;
+  --yellow: #E2B714;
 }
 
 body {

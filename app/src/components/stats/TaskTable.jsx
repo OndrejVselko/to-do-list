@@ -95,8 +95,8 @@ export default function TasksGrid({ data }) {
                     '& .MuiDataGrid-row': { backgroundColor: 'var(--background_primary)', borderBottom: '1px solid var(--yellow)' },
                     '& .MuiDataGrid-row:hover': { backgroundColor: 'var(--background_secondary)' },
                     '& .state-0-cell': { color: 'var(--text_color)' },
-                    '& .state-1-cell': { color: '#7af67a' },
-                    '& .state-overdue-cell': { color: '#ff3939' },
+                    '& .state-1-cell': { color: 'var(--text_green)' },
+                    '& .state-overdue-cell': { color: 'var(--text_red)' },
                     '& .MuiDataGrid-virtualScroller': { backgroundColor: 'var(--background_primary)' },
                 }}
             />
