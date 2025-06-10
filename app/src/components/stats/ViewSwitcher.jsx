@@ -6,7 +6,7 @@ import FilterControls from './FilterControls.jsx';
 import TasksBarChart from './TasksBarChart.jsx';
 import TasksTable from './TaskTable.jsx';
 
-export default function ViewSwitcher({ data }) {
+export default function ViewSwitcher({ data, setEdited, setData }) {
     const [searchName, setSearchName] = useState('');
     const [filterType, setFilterType] = useState('all');
     const [filterState, setFilterState] = useState('all');
@@ -103,7 +103,7 @@ export default function ViewSwitcher({ data }) {
                         />
                     </LocalizationProvider>
                     <Box sx={{ mt: 2 }}>
-                        <TasksTable data={filteredData} />
+                        <TasksTable data={filteredData} setEdited={setEdited} setData={setData}/>
                     </Box>
                 </Box>
             )}

@@ -17,22 +17,22 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import csLocale from 'date-fns/locale/cs';
 
 export default function FilterControls({
-                                           searchName,
-                                           setSearchName,
-                                           filterType,
-                                           setFilterType,
-                                           filterState,
-                                           setFilterState,
-                                           onlyPriority,
-                                           setOnlyPriority,
-                                           filterProject,
-                                           setFilterProject,
-                                           projectOptions,
-                                           dateFrom,
-                                           setDateFrom,
-                                           dateTo,
-                                           setDateTo
-                                       }) {
+    searchName,
+    setSearchName,
+    filterType,
+    setFilterType,
+    filterState,
+    setFilterState,
+    onlyPriority,
+    setOnlyPriority,
+    filterProject,
+    setFilterProject,
+    projectOptions,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo
+}) {
     const commonStyles = {
         InputLabelProps: {
             sx: {

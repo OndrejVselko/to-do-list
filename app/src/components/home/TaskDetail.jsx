@@ -1,9 +1,11 @@
-import { useSelection } from '../global/SelectionContext.jsx';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelection } from '../global/SelectionContext.jsx';
 import { Button } from '@mui/material';
 
-export default function TaskDetail({ data, setData }) {
+export default function TaskDetail({ data, setData, setEdited }) {
     const { selectedItem, setSelectedItem } = useSelection();
+    const navigate = useNavigate();
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -16,27 +18,42 @@ export default function TaskDetail({ data, setData }) {
     const handleCompletition = () => {
         if (!selectedItem) return;
 
-        setData(prev => {
-            let newData = prev.map(item =>
-                item.id === selectedItem.id ? { ...item, state: 1 } : item
-            );
-            if (selectedItem.type === 'subtask' && selectedItem.project_id != null) {
-                const projectId = selectedItem.project_id;
-                const subtasks = newData.filter(item =>
-                    item.type === 'subtask' && item.project_id === projectId
-                );
-                const allDone = subtasks.length > 0 && subtasks.every(st => st.state === 1);
-                if (allDone) {
-                    newData = newData.map(item =>
-                        item.id === projectId ? { ...item, state: 1 } : item
+        setData(prev =>
+            prev.map(item =>
+                item.id === selectedItem.id
+                    ? { ...item, state: 1 }
+                    : item
+            ).map(item => {
+                // pokud je subtask a všechny subtasks hotové, označ projekt také hotovým
+                if (
+                    selectedItem.type === 'subtask' &&
+                    selectedItem.project_id != null
+                ) {
+                    const projectId = selectedItem.project_id;
+                    const subtasks = prev.filter(
+                        st => st.type === 'subtask' && st.project_id === projectId
                     );
+                    const allDone = subtasks.length > 0 && subtasks.every(st => st.state === 1);
+                    return item.id === projectId && allDone
+                        ? { ...item, state: 1 }
+                        : item;
                 }
-            }
-
-            return newData;
-        });
+                return item;
+            })
+        );
 
         setSelectedItem(null);
+    };
+
+    const handleEditation = () => {
+        if (!selectedItem) return;
+
+        // 1) uložím vybraný item do App.js
+        setEdited(selectedItem);
+        // 2) vymažu výběr
+        setSelectedItem(null);
+        // 3) přejdu na edit page
+        navigate('/edit');
     };
 
     if (!selectedItem) {
@@ -49,11 +66,11 @@ export default function TaskDetail({ data, setData }) {
         );
     }
 
-    const renderDetail = () => (
+    return (
         <div className="bubble">
             <div id="task_detail" className="list">
                 <h2>
-                    {Boolean(selectedItem.priority) && (
+                    {selectedItem.priority && (
                         <img
                             src="src/icons/alert.png"
                             alt="important_icon"
@@ -77,12 +94,14 @@ export default function TaskDetail({ data, setData }) {
                         )
                     )}
                 </h2>
+
                 <h3>Do {formatDate(selectedItem.date)}</h3>
                 <h3>
                     {selectedItem.type === 'subtask' ? 'Projekt: ' : 'Štítek: '}
                     {selectedItem.category || 'Bez štítku'}
                 </h3>
                 <p>{selectedItem.comment}</p>
+
                 <Button
                     onClick={handleCompletition}
                     variant="outlined"
@@ -94,9 +113,19 @@ export default function TaskDetail({ data, setData }) {
                 >
                     Splnit úkol
                 </Button>
+
+                <Button
+                    onClick={handleEditation}
+                    variant="outlined"
+                    sx={{
+                        borderColor: 'var(--yellow)',
+                        color: 'var(--yellow)',
+                        '&:hover': { borderColor: 'var(--yellow)' },
+                    }}
+                >
+                    Upravit
+                </Button>
             </div>
         </div>
     );
-
-    return renderDetail();
 }

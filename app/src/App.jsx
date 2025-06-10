@@ -13,6 +13,7 @@ import InfoButton from "./components/global/InfoButton.jsx";
 
 function App() {
     const [data, setData] = useState(null);
+    const [edited, setEdited] = useState(null);
 
     useEffect(() => {
         document.body.setAttribute("theme", "dark");
@@ -36,9 +37,9 @@ function App() {
             <NewTaskButton data={data} setData={setData}/>
             <div className="container">
                 <Routes>
-                    <Route path="/" element={<Home data={data} setData={setData} />} />
-                    <Route path="/edit" element={<Edit data={data} setData={setData} />} />
-                    <Route path="/stats" element={<Stats data={data} />} />
+                    <Route path="/" element={<Home data={data} setData={setData} setEdited={setEdited} />} />
+                    <Route path="/edit" element={<Edit data={data} setData={setData} edited={edited} setEdited={setEdited} />} />
+                    <Route path="/stats" element={<Stats data={data} setEdited={setEdited} setData={setData} />} />
                 </Routes>
             </div>
         </>

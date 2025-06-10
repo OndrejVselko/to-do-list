@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import RemoveTask from './RemoveTask.jsx';
 import Switching from './Switching.jsx';
 import TaskForm from './TaskForm.jsx';
 
-export default function Edit({ data, setData }) {
+export default function Edit({ data, setData, edited, setEdited }) {
     const [selectedItem, setSelectedItem] = useState(null);
     const [mode, setMode] = useState('create');
     const [selectedProject, setSelectedProject] = useState(null);
     const [showData, setShowData] = useState(false);
 
-        const handleForm = (formData) => {
+    // Pokud přijde nový "edited" objekt, nastavíme ho do selectedItem a změníme režim na 'edit'
+    useEffect(() => {
+        if (edited) {
+            setSelectedItem(edited);
+            setMode('edit');
+            // Pokud je subtask, vybereme i projekt
+            if (edited.type === 'subtask') {
+                const project = data.find(item => item.id === edited.project_id) || null;
+                setSelectedProject(project);
+            }
+            setEdited(null);
+        }
+    }, [edited, data]);
+
+    const handleForm = (formData) => {
         if (mode === 'create') {
             const maxId = data.reduce((max, item) => (item.id > max ? item.id : max), 0);
             let projectId = null;
@@ -102,9 +116,9 @@ export default function Edit({ data, setData }) {
                         boxSizing: 'border-box'
                     }}
                 >
-          <pre style={{ color: 'var(--text_color)' }}>
-            {JSON.stringify(data, null, 2)}
-          </pre>
+                    <pre style={{ color: 'var(--text_color)' }}>
+                        {JSON.stringify(data, null, 2)}
+                    </pre>
                 </Box>
             )}
         </>
