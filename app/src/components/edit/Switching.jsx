@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToggleButtonGroup, ToggleButton, Box } from '@mui/material';
 import TasksComboBox from './TasksComboBox.jsx';
 
-export default function Switching({ data, onSelectItem, onModeChange }) {
+export default function Switching({ data, onSelectItem, onModeChange, selectedItem }) {
     const [mode, setMode] = useState('create');
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [localSelectedItem, setLocalSelectedItem] = useState(null);
+
+    // Update local state when selectedItem prop changes (from Edit component)
+    useEffect(() => {
+        if (selectedItem) {
+            setLocalSelectedItem(selectedItem);
+            setMode('edit');
+        }
+    }, [selectedItem]);
 
     const handleModeChange = (event, newMode) => {
         if (newMode) {
             setMode(newMode);
-            setSelectedItem(null);
+            setLocalSelectedItem(null);
             if (onSelectItem) onSelectItem(null);
             if (onModeChange) onModeChange(newMode);
         }
     };
 
     const handleSelect = (item) => {
-        setSelectedItem(item);
+        setLocalSelectedItem(item);
         if (onSelectItem) onSelectItem(item);
     };
 
@@ -62,6 +70,7 @@ export default function Switching({ data, onSelectItem, onModeChange }) {
                     <TasksComboBox
                         data={data}
                         onSelect={handleSelect}
+                        selectedItem={localSelectedItem}
                     />
                 </Box>
             )}

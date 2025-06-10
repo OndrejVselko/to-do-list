@@ -10,12 +10,11 @@ export default function Edit({ data, setData, edited, setEdited }) {
     const [selectedProject, setSelectedProject] = useState(null);
     const [showData, setShowData] = useState(false);
 
-    // Pokud přijde nový "edited" objekt, nastavíme ho do selectedItem a změníme režim na 'edit'
+
     useEffect(() => {
         if (edited) {
             setSelectedItem(edited);
             setMode('edit');
-            // Pokud je subtask, vybereme i projekt
             if (edited.type === 'subtask') {
                 const project = data.find(item => item.id === edited.project_id) || null;
                 setSelectedProject(project);
@@ -70,6 +69,7 @@ export default function Edit({ data, setData, edited, setEdited }) {
                     data={data}
                     onSelectItem={setSelectedItem}
                     onModeChange={setMode}
+                    selectedItem={selectedItem} // Add this line
                 />
 
                 <TaskForm
