@@ -17,13 +17,10 @@ export default function TasksGrid({ data, setEdited, setData }) {
     const handleEditation = (taskData) => {
         if (!taskData) return;
 
-        // Find the original task object from data array
         const originalTask = data.find(item => item.id === taskData.id);
 
         if (originalTask) {
-            // 1) Save selected item to App.js
             setEdited(originalTask);
-            // 2) Navigate to edit page
             navigate('/edit');
         }
     };

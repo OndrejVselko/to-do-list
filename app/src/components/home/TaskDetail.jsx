@@ -24,7 +24,6 @@ export default function TaskDetail({ data, setData, setEdited }) {
                     ? { ...item, state: 1 }
                     : item
             ).map(item => {
-                // pokud je subtask a všechny subtasks hotové, označ projekt také hotovým
                 if (
                     selectedItem.type === 'subtask' &&
                     selectedItem.project_id != null
@@ -48,11 +47,8 @@ export default function TaskDetail({ data, setData, setEdited }) {
     const handleEditation = () => {
         if (!selectedItem) return;
 
-        // 1) uložím vybraný item do App.js
         setEdited(selectedItem);
-        // 2) vymažu výběr
         setSelectedItem(null);
-        // 3) přejdu na edit page
         navigate('/edit');
     };
 

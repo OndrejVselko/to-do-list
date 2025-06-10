@@ -17,7 +17,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import csLocale from 'date-fns/locale/cs';
 import ProjectAutocomplete from './ProjectAutocomplete.jsx';
 
-// Common styles extracted as constants
+
 const COMMON_STYLES = {
     // Input field styles
     inputField: {
@@ -26,7 +26,6 @@ const COMMON_STYLES = {
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
     },
 
-    // Input label styles
     inputLabel: {
         InputLabelProps: {
             sx: {
@@ -36,76 +35,34 @@ const COMMON_STYLES = {
         }
     },
 
-    // Text color for inputs
+
     textColor: {
         input: { color: 'var(--text_color)' },
         textarea: { color: 'var(--text_color)' }
     },
 
-    // Form control label styles
     formControlLabel: {
         '& .MuiFormControlLabel-label': { color: 'var(--text_color)' }
     },
 
-    // Checkbox and radio styles
     checkboxRadio: {
         '&.Mui-checked': { color: 'var(--yellow)' }
     },
 
-    // Form label styles
     formLabel: {
         color: 'var(--text_color)',
         '&.Mui-focused': { color: 'var(--text_color)' }
     },
 
-    // Button styles
+
     button: {
         borderColor: 'var(--yellow)',
         color: 'var(--yellow)'
     },
 
-    // DatePicker specific styles
-    datePicker: {
-        textField: {
-            sx: {
-                '& .MuiOutlinedInput-root': {
-                    '& fieldset': { borderColor: 'var(--yellow)' },
-                    '&:hover fieldset': { borderColor: 'var(--yellow)' },
-                    '&.Mui-focused fieldset': { borderColor: 'var(--yellow)' }
-                },
-                '& .MuiInputBase-input': { color: 'var(--text_color)' },
-                '& .MuiInputLabel-root': { color: 'var(--yellow)' },
-                '& .MuiInputLabel-root.Mui-focused': { color: 'var(--yellow)' }
-            }
-        },
-        popper: {
-            sx: {
-                '& .MuiPaper-root': {
-                    backgroundColor: 'var(--background_primary)',
-                    border: '1px solid var(--yellow)',
-                    color: 'var(--text_color)'
-                }
-            }
-        },
-        day: {
-            sx: {
-                '&.Mui-selected, &.Mui-selected:hover': {
-                    backgroundColor: 'var(--yellow)',
-                    color: 'var(--background_primary)'
-                },
-                color: 'var(--text_color)'
-            }
-        },
-        actionBar: {
-            sx: {
-                '& .MuiButton-textPrimary': {
-                    color: 'var(--yellow)'
-                }
-            }
-        }
-    },
 
-    // Disabled field styles
+
+
     disabledField: {
         InputProps: {
             sx: {
@@ -125,7 +82,6 @@ const COMMON_STYLES = {
     }
 };
 
-// Fix the disabled field reference
 COMMON_STYLES.disabledField.InputProps.sx = {
     ...COMMON_STYLES.inputField,
     '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
@@ -177,12 +133,12 @@ const dateStyles = {
 };
 
 export default function TaskProjectForm({
-                                            selectedItem = null,
-                                            onSubmit,
-                                            data,
-                                            setSelectedProject,
-                                            mode
-                                        }) {
+        selectedItem = null,
+        onSubmit,
+        data,
+        setSelectedProject,
+        mode
+    }) {
     const emptyValues = {
         type: 'task',
         name: '',
