@@ -120,6 +120,7 @@ export default function TaskDetail({ data, setData, setEdited }) {
                     sx={{
                         borderColor: 'var(--yellow)',
                         color: 'var(--yellow)',
+                        marginLeft: '10px',
                         '&:hover': { borderColor: 'var(--yellow)' },
                     }}
                 >

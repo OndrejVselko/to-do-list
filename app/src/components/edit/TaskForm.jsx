@@ -17,13 +17,172 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import csLocale from 'date-fns/locale/cs';
 import ProjectAutocomplete from './ProjectAutocomplete.jsx';
 
+// Common styles extracted as constants
+const COMMON_STYLES = {
+    // Input field styles
+    inputField: {
+        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
+    },
+
+    // Input label styles
+    inputLabel: {
+        InputLabelProps: {
+            sx: {
+                color: 'var(--text_label)',
+                '&.Mui-focused': { color: 'var(--yellow)' }
+            }
+        }
+    },
+
+    // Text color for inputs
+    textColor: {
+        input: { color: 'var(--text_color)' },
+        textarea: { color: 'var(--text_color)' }
+    },
+
+    // Form control label styles
+    formControlLabel: {
+        '& .MuiFormControlLabel-label': { color: 'var(--text_color)' }
+    },
+
+    // Checkbox and radio styles
+    checkboxRadio: {
+        '&.Mui-checked': { color: 'var(--yellow)' }
+    },
+
+    // Form label styles
+    formLabel: {
+        color: 'var(--text_color)',
+        '&.Mui-focused': { color: 'var(--text_color)' }
+    },
+
+    // Button styles
+    button: {
+        borderColor: 'var(--yellow)',
+        color: 'var(--yellow)'
+    },
+
+    // DatePicker specific styles
+    datePicker: {
+        textField: {
+            sx: {
+                '& .MuiOutlinedInput-root': {
+                    '& fieldset': { borderColor: 'var(--yellow)' },
+                    '&:hover fieldset': { borderColor: 'var(--yellow)' },
+                    '&.Mui-focused fieldset': { borderColor: 'var(--yellow)' }
+                },
+                '& .MuiInputBase-input': { color: 'var(--text_color)' },
+                '& .MuiInputLabel-root': { color: 'var(--yellow)' },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'var(--yellow)' }
+            }
+        },
+        popper: {
+            sx: {
+                '& .MuiPaper-root': {
+                    backgroundColor: 'var(--background_primary)',
+                    border: '1px solid var(--yellow)',
+                    color: 'var(--text_color)'
+                }
+            }
+        },
+        day: {
+            sx: {
+                '&.Mui-selected, &.Mui-selected:hover': {
+                    backgroundColor: 'var(--yellow)',
+                    color: 'var(--background_primary)'
+                },
+                color: 'var(--text_color)'
+            }
+        },
+        actionBar: {
+            sx: {
+                '& .MuiButton-textPrimary': {
+                    color: 'var(--yellow)'
+                }
+            }
+        }
+    },
+
+    // Disabled field styles
+    disabledField: {
+        InputProps: {
+            sx: {
+                ...this?.inputField,
+                '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'var(--text_label)'
+                }
+            }
+        },
+        InputLabelProps: {
+            sx: {
+                color: 'var(--text_label)',
+                '&.Mui-focused': { color: 'var(--yellow)' },
+                '&.Mui-disabled': { color: 'var(--text_label)' }
+            }
+        }
+    }
+};
+
+// Fix the disabled field reference
+COMMON_STYLES.disabledField.InputProps.sx = {
+    ...COMMON_STYLES.inputField,
+    '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+        borderColor: 'var(--text_label)'
+    }
+};
+
+const dateStyles = {
+    InputLabelProps: {
+        sx: {
+            color: 'var(--text_label)',
+            '&.Mui-focused': {
+                color: 'var(--yellow)'
+            }
+        }
+    },
+    InputProps: {
+        sx: {
+            '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--yellow)'
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--yellow)'
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--yellow)'
+            },
+            '& input': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersInputBase-root': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersInputBase-root.Mui-focused': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersSectionList-root': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersSectionList-root .MuiTypography-root': {
+                color: 'var(--text_color)'
+            }
+        }
+    },
+    sx: {
+        color: 'var(--text_color)'
+    }
+
+};
+
 export default function TaskProjectForm({
-    selectedItem = null,
-    onSubmit,
-    data,
-    setSelectedProject,
-    mode
-}) {
+                                            selectedItem = null,
+                                            onSubmit,
+                                            data,
+                                            setSelectedProject,
+                                            mode
+                                        }) {
     const emptyValues = {
         type: 'task',
         name: '',
@@ -36,7 +195,6 @@ export default function TaskProjectForm({
 
     const [values, setValues] = useState(emptyValues);
     const [message, setMessage] = useState('');
-
 
     useEffect(() => {
         if (selectedItem) {
@@ -114,21 +272,6 @@ export default function TaskProjectForm({
         }
     };
 
-    const inputStyles = {
-        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
-        '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--yellow)' },
-    };
-
-    const labelStyles = {
-        InputLabelProps: {
-            sx: {
-                color: 'var(--text_label)',
-                '&.Mui-focused': { color: 'var(--yellow)' }
-            }
-        }
-    };
-
     return (
         <Box
             className="bubble"
@@ -138,10 +281,7 @@ export default function TaskProjectForm({
             sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2, mt: '6vh' }}
         >
             <FormControl component="fieldset">
-                <FormLabel sx={{
-                    color: 'var(--text_color)',
-                    '&.Mui-focused': { color: 'var(--text_color)' }
-                }}>
+                <FormLabel sx={COMMON_STYLES.formLabel}>
                     <p style={{fontSize:'22px'}}>Typ položky</p>
                 </FormLabel>
                 <RadioGroup
@@ -154,7 +294,7 @@ export default function TaskProjectForm({
                         <FormControlLabel
                             key={val}
                             value={val}
-                            control={<Radio sx={{ '&.Mui-checked': { color: 'var(--yellow)' } }} />}
+                            control={<Radio sx={COMMON_STYLES.checkboxRadio} />}
                             label={
                                 val === 'task'
                                     ? 'Úkol'
@@ -162,7 +302,7 @@ export default function TaskProjectForm({
                                         ? 'Projekt'
                                         : 'Podúkol'
                             }
-                            sx={{ '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
+                            sx={COMMON_STYLES.formControlLabel}
                         />
                     ))}
                 </RadioGroup>
@@ -188,9 +328,9 @@ export default function TaskProjectForm({
                 onChange={handleChange}
                 required
                 fullWidth
-                InputProps={{ sx: inputStyles }}
-                {...labelStyles}
-                sx={{ input: { color: 'var(--text_color)' } }}
+                InputProps={{ sx: COMMON_STYLES.inputField }}
+                {...COMMON_STYLES.inputLabel}
+                sx={COMMON_STYLES.textColor}
             />
 
             <LocalizationProvider
@@ -207,49 +347,15 @@ export default function TaskProjectForm({
                     inputFormat="dd.MM.yyyy"
                     mask="__.__.____"
                     slotProps={{
-                        textField: {
-                            sx: {
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': { borderColor: 'var(--yellow)' },
-                                    '&:hover fieldset': { borderColor: 'var(--yellow)' },
-                                    '&.Mui-focused fieldset': { borderColor: 'var(--yellow)' }
-                                },
-                                '& .MuiInputBase-input': { color: 'var(--text_color)' },
-                                '& .MuiInputLabel-root': { color: 'var(--yellow)' },
-                                '& .MuiInputLabel-root.Mui-focused': { color: 'var(--yellow)' }
-                            }
-                        },
-                        popper: {
-                            sx: {
-                                '& .MuiPaper-root': {
-                                    backgroundColor: 'var(--background_primary)',
-                                    border: '1px solid var(--yellow)',
-                                    color: 'var(--text_color)'
-                                }
-                            }
-                        },
-                        day: {
-                            sx: {
-                                '&.Mui-selected, &.Mui-selected:hover': {
-                                    backgroundColor: 'var(--yellow)',
-                                    color: 'var(--background_primary)'
-                                },
-                                color: 'var(--text_color)'
-                            }
-                        },
-                        actionBar: {
-                            sx: {
-                                '& .MuiButton-textPrimary': {
-                                    color: 'var(--yellow)'
-                                }
-                            }
+                        field: {
+                            ...dateStyles.InputLabelProps,
+                            ...dateStyles.InputProps
                         }
                     }}
-                    renderInput={(params) => (
+                    renderInput={params => (
                         <TextField
                             {...params}
-                            required
-                            fullWidth
+                            sx={dateStyles.sx}
                         />
                     )}
                 />
@@ -262,20 +368,8 @@ export default function TaskProjectForm({
                 onChange={handleChange}
                 disabled={values.type === 'subtask'}
                 fullWidth
-                InputProps={{
-                    sx: inputStyles,
-                    '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'var(--text_label)'
-                    }
-                }}
-                InputLabelProps={{
-                    sx: {
-                        color: 'var(--text_label)',
-                        '&.Mui-focused': { color: 'var(--yellow)' },
-                        '&.Mui-disabled': { color: 'var(--text_label)' }
-                    }
-                }}
-                sx={{ input: { color: 'var(--text_color)' } }}
+                {...COMMON_STYLES.disabledField}
+                sx={COMMON_STYLES.textColor}
             />
 
             <FormControlLabel
@@ -284,11 +378,11 @@ export default function TaskProjectForm({
                         name="priority"
                         checked={values.priority}
                         onChange={handleChange}
-                        sx={{ '&.Mui-checked': { color: 'var(--yellow)' } }}
+                        sx={COMMON_STYLES.checkboxRadio}
                     />
                 }
                 label="Priorita"
-                sx={{ '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
+                sx={COMMON_STYLES.formControlLabel}
             />
 
             <TextField
@@ -299,16 +393,16 @@ export default function TaskProjectForm({
                 multiline
                 rows={4}
                 fullWidth
-                InputProps={{ sx: inputStyles }}
-                {...labelStyles}
-                sx={{ textarea: { color: 'var(--text_color)' } }}
+                InputProps={{ sx: COMMON_STYLES.inputField }}
+                {...COMMON_STYLES.inputLabel}
+                sx={COMMON_STYLES.textColor}
             />
 
             <Button
                 type="submit"
                 variant="outlined"
                 disabled={!values.date}
-                sx={{ borderColor: 'var(--yellow)', color: 'var(--yellow)' }}
+                sx={COMMON_STYLES.button}
             >
                 <img
                     src="src/icons/save.png"

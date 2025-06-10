@@ -1,4 +1,3 @@
-// src/components/NewTaskDialog.jsx
 import React, { useState } from 'react';
 import {
     Dialog,
@@ -9,10 +8,67 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
+    Box
 } from '@mui/material';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import csLocale from 'date-fns/locale/cs';
+
+// Common outline styles
+const outlineStyles = {
+    '& .MuiOutlinedInput-root': {
+        backgroundColor: 'var(--background_primary)',
+        '& fieldset': { borderColor: 'var(--yellow)' },
+        '&:hover fieldset': { borderColor: 'var(--yellow)' },
+        '&.Mui-focused fieldset': { borderColor: 'var(--yellow)' }
+    },
+    '& .MuiInputLabel-root': { color: 'var(--text_label)' },
+    '& .MuiInputBase-input': { color: 'var(--text_color)' }
+};
+
+// DatePicker specific styles
+const dateStyles = {
+    InputLabelProps: {
+        sx: {
+            color: 'var(--text_label)',
+            '&.Mui-focused': {
+                color: 'var(--yellow)'
+            }
+        }
+    },
+    InputProps: {
+        sx: {
+            '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--yellow)'
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--yellow)'
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--yellow)'
+            },
+            '& input': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersInputBase-root': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersInputBase-root.Mui-focused': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersSectionList-root': {
+                color: 'var(--text_color)'
+            },
+            '& .MuiPickersSectionList-root .MuiTypography-root': {
+                color: 'var(--text_color)'
+            }
+        }
+    },
+    sx: {
+        color: 'var(--text_color)'
+    }
+};
 
 export default function NewTaskDialog({ open, onClose, onCreate }) {
     const [name, setName] = useState('');
@@ -38,17 +94,6 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
         onClose();
     };
 
-    const outlineStyles = {
-        '& .MuiOutlinedInput-root': {
-            backgroundColor: 'var(--background_primary)',
-            '& fieldset': { borderColor: 'var(--yellow)' },
-            '&:hover fieldset': { borderColor: 'var(--yellow)' },
-            '&.Mui-focused fieldset': { borderColor: 'var(--yellow)' },
-        },
-        '& .MuiInputLabel-root': { color: 'var(--text_label)' },
-        '& .MuiInputBase-input': { color: 'var(--text_color)' },
-    };
-
     return (
         <Dialog
             open={open}
@@ -57,13 +102,11 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
                 sx: {
                     backgroundColor: 'var(--background_primary)',
                     border: '1px solid var(--yellow)',
-                    borderRadius: 2,
+                    borderRadius: 2
                 }
             }}
         >
-            <DialogTitle sx={{ color: 'var(--text_color)' }}>
-                Vytvořit úkol
-            </DialogTitle>
+            <DialogTitle sx={{ color: 'var(--text_color)' }}>Vytvořit úkol</DialogTitle>
             <DialogContent sx={{ color: 'var(--text_color)' }}>
                 <TextField
                     required
@@ -106,43 +149,27 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
                         inputFormat="dd.MM.yyyy"
                         mask="__.__.____"
                         slotProps={{
-                            textField: { sx: outlineStyles },
-                            popper: {
-                                sx: {
-                                    '& .MuiPaper-root': {
-                                        backgroundColor: 'var(--background_primary)',
-                                        border: '1px solid var(--yellow)',
-                                        color: 'var(--text_color)',
-                                    }
-                                }
-                            },
-                            day: {
-                                sx: {
-                                    '&.Mui-selected, &.Mui-selected:hover': {
-                                        backgroundColor: 'var(--yellow)',
-                                        color: 'var(--background_primary)',
-                                    },
-                                    color: 'var(--text_color)',
-                                }
-                            },
-                            actionBar: {
-                                sx: {
-                                    '& .MuiButton-textPrimary': { color: 'var(--yellow)' }
-                                }
+                            field: {
+                                clearable: true,
+                                ...dateStyles.InputLabelProps,
+                                ...dateStyles.InputProps
                             }
                         }}
+                        renderInput={params => (
+                            <TextField
+                                {...params}
+                                sx={dateStyles.sx}
+                            />
+                        )}
                     />
                 </LocalizationProvider>
                 <FormControlLabel
-                    sx={{ marginLeft:'10px', marginTop:'7px', '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
+                    sx={{ ml: 1, mt: 1, '& .MuiFormControlLabel-label': { color: 'var(--text_color)' } }}
                     control={
                         <Checkbox
                             checked={priority}
                             onChange={e => setPriority(e.target.checked)}
-                            sx={{
-                                color: 'var(--yellow)',
-                                '&.Mui-checked': { color: 'var(--yellow)' },
-                            }}
+                            sx={{ color: 'var(--yellow)', '&.Mui-checked': { color: 'var(--yellow)' } }}
                         />
                     }
                     label="Prioritní"
@@ -155,8 +182,7 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
                     sx={{
                         borderColor: 'var(--yellow)',
                         color: 'var(--text_color)',
-                        '&:hover': { borderColor: 'var(--yellow)' },
-                        '&:active': { borderColor: 'var(--yellow)' },
+                        '&:hover, &:active': { borderColor: 'var(--yellow)' }
                     }}
                 >
                     Zrušit
@@ -168,8 +194,7 @@ export default function NewTaskDialog({ open, onClose, onCreate }) {
                     sx={{
                         borderColor: 'var(--yellow)',
                         color: 'var(--text_color)',
-                        '&:hover': { borderColor: 'var(--yellow)' },
-                        '&:active': { borderColor: 'var(--yellow)' },
+                        '&:hover, &:active': { borderColor: 'var(--yellow)' }
                     }}
                 >
                     Vytvořit

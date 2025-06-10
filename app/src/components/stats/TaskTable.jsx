@@ -88,9 +88,10 @@ export default function TasksGrid({ data, setEdited, setData }) {
                             borderColor: 'var(--text_red)',
                             color: 'var(--text_red)',
                             '&:hover': { borderColor: 'var(--text_red)' },
+                            marginLeft: '50px',
                         }}
                     >
-                        Reset
+                        Zrušit splnění
                     </Button>
                 </Box>
             ),
